@@ -17,6 +17,21 @@
 
   gtag('config', 'G-BBE72W766K');
 </script>
+<script>
+/**
+* Function that captures a click on an outbound link in Analytics.
+* This function takes a valid URL string as an argument, and uses that URL string
+* as the event label. Setting the transport method to 'beacon' lets the hit be sent
+* using 'navigator.sendBeacon' in browser that support it.
+*/
+var captureOutboundLink = function(url) {
+   ga('send', 'event', 'outbound', 'click', url, {
+     'transport': 'beacon',
+     'hitCallback': function(){document.location = url;}
+   });
+}
+</script>
+  
 
 <body>
   <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
@@ -32,7 +47,7 @@
               </p>
               <p style="text-align:center">
                 <a href="mailto:amt6@williams.edu">Email</a> &nbsp/&nbsp
-                <a href="alextrevithick-CV.pdf">CV</a>
+                <a href="alextrevithick-CV.pdf" onclick="captureOutboundLink('alextrevithick-CV.pdf'); return false;">CV</a>
               </p>
             </td>
             <td style="padding:2.5%;width:40%;max-width:40%">
@@ -89,7 +104,7 @@
               <img src="images/williams.jpg" style="width:100%;">
             </td>
             <td width="75%" valign="center">
-              <a href="https://web.williams.edu/Mathematics/lg5/402/index.html">Teaching Assistant in Measure Theory and Hilbert Spaces, Fall 2020</a>
+              <a href="https://web.williams.edu/Mathematics/lg5/402/index.html" onclick="captureOutboundLink('https://web.williams.edu/Mathematics/lg5/402/index.html'); return false;">Teaching Assistant in Measure Theory and Hilbert Spaces, Fall 2020</a>
               <br>
               <br>
               Teaching Assistant in Computational Linear Algebra, Fall 2018</a>
@@ -108,13 +123,13 @@
                 <img src="images/oxford.jpg" style="width:100%;">
               </td>
               <td width="75%" valign="center">
-                <a href="https://courses.maths.ox.ac.uk/node/42804/materials">Theories of Deep Learning</a>
+                <a href="https://courses.maths.ox.ac.uk/node/42804/materials" onclick="captureOutboundLink('https://courses.maths.ox.ac.uk/node/42804/materials'); return false;">Theories of Deep Learning</a>
                 <br>
                 <br>
                 3D Computer Vision and Deep Learning</a>
                 <br>
                 <br>
-                <a href="https://courses.maths.ox.ac.uk/node/42394">Logic and Model Theory</a>
+                <a href="https://courses.maths.ox.ac.uk/node/42394" onclick="captureOutboundLink('https://courses.maths.ox.ac.uk/node/42394'); return false;">Logic and Model Theory</a>
               </td>
             </tr>
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
