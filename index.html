@@ -7,7 +7,9 @@
 
   <link rel="stylesheet" type="text/css" href="stylesheet.css">
   <link rel="icon" type="image/png" href="images/seal_icon.png">
-</head>
+  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BBE72W766K"></script>
 <script>
@@ -17,21 +19,40 @@
 
   gtag('config', 'G-BBE72W766K');
 </script>
-<script>
-/**
-* Function that captures a click on an outbound link in Analytics.
-* This function takes a valid URL string as an argument, and uses that URL string
-* as the event label. Setting the transport method to 'beacon' lets the hit be sent
-* using 'navigator.sendBeacon' in browser that support it.
-*/
-var captureOutboundLink = function(url) {
-   ga('send', 'event', 'outbound', 'click', url, {
-     'transport': 'beacon',
-     'hitCallback': function(){document.location = url;}
-   });
-}
-</script>
-  
+    <!-- IPinfo and Custom Dimension Setup -->
+    <script>
+      $(document).ready(function() {
+        var token = '6fd1a27edd89b6';
+        var url = 'https://ipinfo.io?token=' + token;
+        
+        $.getJSON(url, function(data) {
+          var city = data.city;
+
+          // Now send the city information to Google Analytics
+          gtag('set', {'city_info': city}); // Replace 'X' with the actual index number
+          gtag('event', 'city_info', {'event_category': 'user', 'event_label': city}); // Sending as an event
+        })
+        .fail(function(jqxhr, textStatus, error) {
+          var err = textStatus + ", " + error;
+          console.log("Request Failed: " + err);
+        });
+      });
+    </script>
+
+    <!-- Update Outbound Link Tracking to Use gtag.js -->
+    <script>
+    var captureOutboundLink = function(url) {
+      gtag('event', 'click', {
+        'event_category': 'outbound',
+        'event_label': url,
+        'transport_type': 'beacon',
+        'event_callback': function() {
+          document.location = url;
+        }
+      });
+    }
+    </script>
+</head>  
 
 <body>
   <table style="width:100%;max-width:900px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
