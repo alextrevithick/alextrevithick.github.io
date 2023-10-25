@@ -18,26 +18,23 @@
   gtag('js', new Date());
 
   gtag('config', 'G-BBE72W766K');
-</script>
-    <!-- IPinfo and Custom Dimension Setup -->
-    <script>
-      $(document).ready(function() {
-        var token = '6fd1a27edd89b6';
-        var url = 'https://ipinfo.io?token=' + token;
-        
-        $.getJSON(url, function(data) {
-          var city = data.city;
+<script>
+  $(document).ready(function() {
+    var token = '6fd1a27edd89b6';
+    var url = 'https://ipinfo.io?token=' + token;
 
-          // Now send the city information to Google Analytics
-          gtag('set', {'city_info': city}); // Replace 'X' with the actual index number
-          gtag('event', 'city_info', {'event_category': 'user', 'event_label': city}); // Sending as an event
-        })
-        .fail(function(jqxhr, textStatus, error) {
-          var err = textStatus + ", " + error;
-          console.log("Request Failed: " + err);
-        });
-      });
-    </script>
+    $.getJSON(url, function(data) {
+      var city = data.city;
+
+      // Send the city information to Google Analytics as an event
+      gtag('event', 'city_info', {'event_category': 'session', 'event_label': city});
+    })
+    .fail(function(jqxhr, textStatus, error) {
+      var err = textStatus + ", " + error;
+      console.log("Request Failed: " + err);
+    });
+  });
+</script>
 
     <!-- Update Outbound Link Tracking to Use gtag.js -->
     <script>
