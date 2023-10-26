@@ -25,9 +25,9 @@
 
     $.getJSON(url, function(data) {
       var city = data.city;
-
+      console.log("City: ", city); // This will print the city to your browser's console
       // Send the city information to Google Analytics as an event
-      gtag('event', 'city_info', {'event_category': 'session', 'event_label': city});
+      gtag('event', 'city_info', {'event_label': city});
     })
     .fail(function(jqxhr, textStatus, error) {
       var err = textStatus + ", " + error;
