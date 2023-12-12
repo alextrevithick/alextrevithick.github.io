@@ -26,12 +26,11 @@
 
     $.getJSON(url, function(data) {
       var city = data.city;
-      console.log("City: ", city); // This will print the city to your browser's console
-      console.log("2 is running"); // This should be printed to the console
-
       
-      // Send the city information to Google Analytics as an event
-      gtag('event', 'city_info', {'event_label': city});
+      // Send the city information to Google Analytics as an event label
+      gtag('event', 'city_info2', {
+        'event_label': city
+      });
     })
     .fail(function(jqxhr, textStatus, error) {
       var err = textStatus + ", " + error;
