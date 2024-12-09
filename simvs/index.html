@@ -64,6 +64,15 @@
             width: calc(100% - 116px - 1rem);
             margin-left: auto;
         }
+        /* Add these new rules */
+        .row .col-md-8.offset-md-2 {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .text-justify {
+            max-width: 100%;
+        }
     </style>
 </head>
 
@@ -137,7 +146,7 @@
                 <div class="col-md-8 offset-md-2">
                     <h3> How it works </h3>
                     <p class="text-justify" style="text-align: left;">
-   Given a multi-view dataset, we perform generative augmentation with a video model, given the individual images and inconsistency prompts. These images are fed to a multiview generative model along with a held out "target state" image. The model is trained to predict a consistent set of images corresponding to the target state, i.e., the original set of multiview images.
+        Given a multi-view dataset, we perform generative augmentation with a video model, given the individual images and inconsistency prompts. These images are fed to a multiview generative model along with a held out "target state" image. The model is trained to predict a consistent set of images corresponding to the target state, i.e., the original set of multiview images.
                     </p>
                     <video muted loop autoplay src="videos/teaser/explainer.mp4" style="max-width:878px" width=100%>
                         An animated diagram briefly describing the method. On the left, an input image is shown. Next are samples from the
@@ -155,12 +164,11 @@
             <div class="row2">
                 <div class="col-md-8 offset-md-2">
                     <h3>
-                        Comparisons to other methods
+                        Harmonizing Sparse Images of Dynamic Scenes 
                     </h3>
             
                     <p class="text-justify" style="text-align: left;">
-                        Compare the renders and depth maps of our method CAT3D (right) with baseline methods (left). Try selecting different
-                        methods and scenes!
+                        We take sparse image sets from the <a href="https://hangg7.com/dycheck/">DyCheck</a> and make them consistent with the thumbnail (also top left image of the inputs). Compare the renders and depth maps of our method SimVS (right) with CAT3D (left). 
                     </p>
             
                     <div id="single-image-compare2">
@@ -361,12 +369,11 @@
             <div class="row">
                 <div class="col-md-8 offset-md-2">
                     <h3>
-                        Comparisons to other methods
+                        Sparse Images of Scenes under Varying Illumination
                     </h3>
 
                     <p class="text-justify" style="text-align: left;">
-                        Compare the renders and depth maps of our method CAT3D (right) with baseline methods (left). Try selecting different
-                        methods and scenes!
+                        We collect our own dataset with an iPhone camera, in which the same scene is observed under 3 different lighting conditions. The models reconstruct the scene under the target state specified in the thumbnail and top of the inputs. Compare the renders and depth maps of our method SimVS (right) with CAT3D (left).
                     </p>
 
                     <div id="single-image-compare">
@@ -591,6 +598,9 @@
                     </script>
                 </div>
             </div>
+        </div>
+    </div>
+
 
             <br>
             <br>
@@ -602,9 +612,9 @@
                 <div class="col-md-8 offset-md-2">
                     <h3>Video Samples and Heuristic Augmentations</h3>
                     <div style="text-align: left;">
-                        Click on the interactive grid to view the video samples in comparison to the original image and various augmentations.
+                        Click on the interactive grid to view the video samples in comparison to the original image and various augmentations. Note that some videos include flashing lights.
                     </div>
-                    <div id="single-image-compare" class="container position-relative p-0 d-flex align-items-start">
+                    <div id="single-image-compare" class="position-relative p-0 d-flex align-items-start w-100">
                         <style>
                             .simvs-grid-container {
                                 display: grid;
@@ -614,6 +624,7 @@
                                 margin: 0;
                                 padding: 0;
                                 contain: layout style paint;
+                                flex-grow: 1;  /* Add this */
                             }
                 
                             .simvs-grid-item {
@@ -699,7 +710,6 @@
             
                             #single-image-compare {
                                 margin: 20px auto;
-                                max-width: 1200px;
                                 width: 100%;
                             }
                         </style>
@@ -856,26 +866,15 @@
 
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <h3> Method overview </h3>
-                    <image width=100% src="img/pipeline.png"
-                        alt="A diagram explaining the method in broad strokes, like explained in the caption."></image>
-
-                    <figcaption class="text-justify margin-5" style="text-align: left;">
-                    <br>
-                    SimVS augments existing multiview image datasets with inconsistencies typically observed during capture. By sampling image-conditioned videos with the camera static, we may generate a synthetic conditioning set for a multiview generative like CAT3D. By asking the model to harmonize the inputs with respect to a single clean sample, we can train the model to be robust with respect to these inconsistencies. 
+                    <h4>
+                        Acknowledgements
+                    </h4>
+            
+                    <p class="text-justify" style="text-align: left;">
+                        We would like to thank Paul-Edouard Sarlin, Jiamu Sun, Songyou Peng, Richard Tucker, Rick Szeliski and Stan Szymanowicz for insightful conversations and help. We also extend our gratitude to Shlomi Fruchter, Kevin Murphy, Mohammad Babaeizadeh, Han Zhang and Amir Hertz for training the base text-to-image latent diffusion model. This work was supported in part by an NSF Fellowship, ONR grant N00014-23-1-2526, gifts from Google, Adobe, Qualcomm and Rembrand, the Ronald L. Graham Chair, and the UC San Diego Center for Visual Computing. 
+                        <br><br><br>
                     </p>
                 </div>
-            </div>
-
-            <div class="col-md-8 offset-md-2 text-start">
-                <h4>
-                    Acknowledgements
-                </h4>
-
-                <p class="text-justify" style="text-align: left;">
-                    We would like to thank Paul-Edouard Sarlin, Jiamu Sun, Songyou Peng, Richard Tucker, Rick Szeliski and Stan Szymanowicz for insightful conversations and help. We also extend our gratitude to Shlomi Fruchter, Kevin Murphy, Mohammad Babaeizadeh, Han Zhang and Amir Hertz for training the base text-to-image latent diffusion model. This work was supported in part by an NSF Fellowship, ONR grant N00014-23-1-2526, gifts from Google, Adobe, Qualcomm and Rembrand, the Ronald L. Graham Chair, and the UC San Diego Center for Visual Computing. 
-                    <br><br><br>
-                </p>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-5 center text-start">
@@ -883,13 +882,13 @@
                         <h4 style="text-align: center">BibTeX </h4>
                     </label>
                     <textarea id="bibtex" class="form-control" readonly>
-@article{trevithick2024simvs,
-    title={SimVS: Simulating World Inconsistencies for Robust View Synthesis},
-    author={Alex Trevithick and Roni Paiss and Philipp Henzler and Dor Verbin and Rundi Wu and Hadi Alzayer and Ruiqi Gao and Ben Poole and Jonathan T. Barron and Aleksander Holynski and Ravi Ramamoorthi and  Pratul P. Srinivasan
-    },
-    journal={arXiv},
-    year={2024}
-}
+            @article{trevithick2024simvs,
+                title={SimVS: Simulating World Inconsistencies for Robust View Synthesis},
+                author={Alex Trevithick and Roni Paiss and Philipp Henzler and Dor Verbin and Rundi Wu and Hadi Alzayer and Ruiqi Gao and Ben Poole and Jonathan T. Barron and Aleksander Holynski and Ravi Ramamoorthi and  Pratul P. Srinivasan
+                },
+                journal={arXiv},
+                year={2024}
+            }
                         </textarea>
                 </div>
             </div>
@@ -910,7 +909,6 @@
             </div>
 
         </footer>
-    </div>
 </body>
 
 </html>
