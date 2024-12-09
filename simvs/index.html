@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>SimVS: Simulating World Inconsistencies for Robust View Synthesis</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:image" content="https://cat3d.github.io/img/logo_simvs.jpeg">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1711">
+    <meta property="og:image:height" content="576">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://simvs.github.io/" />
+    <meta property="og:title" content="SimVS: Simulating World Inconsistencies for Robust View Synthesis" />
+    <meta property="og:description"
+        content="Advances in 3D reconstruction have enabled high-quality 3D capture, but require a user to collect hundreds to thousands of images to create a 3D scene. We present CAT3D, a method for creating anything in 3D by simulating this real-world capture process with a multi-view diffusion model. Given any number of input images and a set of target novel viewpoints, our model generates highly consistent novel views of a scene. These generated views can be used as input to robust 3D reconstruction techniques to produce 3D representations that can be rendered from any viewpoint in real-time. CAT3D can create entire 3D scenes in as little as one minute, and outperforms existing methods for single image and few-view 3D scene creation." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SimVS: Simulating World Inconsistencies for Robust View Synthesis"/>
+    <meta name="twitter:description"
+        content="Advances in 3D reconstruction have enabled high-quality 3D capture, but require a user to collect hundreds to thousands of images to create a 3D scene. We present CAT3D, a method for creating anything in 3D by simulating this real-world capture process with a multi-view diffusion model. Given any number of input images and a set of target novel viewpoints, our model generates highly consistent novel views of a scene. These generated views can be used as input to robust 3D reconstruction techniques to produce 3D representations that can be rendered from any viewpoint in real-time. CAT3D can create entire 3D scenes in as little as one minute, and outperforms existing methods for single image and few-view 3D scene creation." />
+    <meta name="twitter:image" content="https://cat3d.github.io/img/rep_img.jpeg" />
+
+    <link rel="icon" href="img/simvs_logo.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8ZERS5BVPS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8ZERS5BVPS');
+    </script>   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+        </script>
+    <script defer src="js/fontawesome.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/synced_video_selector.js"></script>
+
+    <style>
+        .final-element {
+            white-space: nowrap;
+        }
+        .pill-row {
+            width: calc(100% - 116px - 1rem);
+            margin-left: auto;
+        }
+    </style>
+</head>
+
+<body style="padding: 5%; padding-top: min(15px, 5%); padding-bottom: min(5px, 5%); width: 100%">
+    <div class="container-lg text-center" style="max-width: 1500px; margin: auto;" id="main">
+        <header role="banner">
+            <!-- <div class="container" id="main"> -->
+            <div class="row">
+                <h2 class="col-md-12 text-center">
+                    <b>SimVS:</b> Simulating World Inconsistencies for Robust View Synthesis</br>
+                </h2>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-3">
+                </div>
+                <div class="container-fluid text-center">
+                    <ul class="list-inline" style="white-space: nowrap; margin:0px 0px 0px 0px;" >
+                        <li><a style="font-size: calc(min(3vw, 15px))" href="https://alextrevithick.github.io/">Alex Trevithick<sup>1,2</sup></a></li>
+                        <li><a style="font-size: calc(min(3vw, 15px))" href="https://scholar.google.com/citations?user=-KSDNZQAAAAJ&hl=en">Roni Paiss<sup>2</sup></a></li>
+                        <li><a style="font-size: calc(min(3vw, 15px))" href="https://henzler.github.io/">Philipp Henzler<sup>3</sup></a></li>
+                        <li><a style="font-size: calc(min(3vw, 15px))" href="https://dorverbin.github.io/">Dor Verbin<sup>2</sup></a></li>
+                        <br> 
+                        <li><a style="font-size: calc(min(3vw, 15px))" href="https://www.cs.columbia.edu/~rundi/">Rundi Wu<sup>2,4</sup></a></li>
+                        <li><a style="font-size: calc(min(3vw, 15px))" href="https://hadizayer.github.io/">Hadi Alzayer<sup>2,5</sup></a></li>
+                        <li><a style="font-size: calc(min(3vw, 15px))" href="https://ruiqigao.github.io/">Ruiqi Gao<sup>2</sup></a><!--don't add a linebreak here! it adds a space!--></li>
+                        <li><a style="font-size: calc(min(3vw, 15px))"  href="https://poolio.github.io/">Ben Poole<sup>2</sup></a><!--don't add a linebreak here! it adds a space!-->
+                        <li><a style="font-size: calc(min(3vw, 15px))" href="https://jonbarron.info/">Jonathan T. Barron<sup>2</sup></a></li>
+                        <br>
+                        <li><a style="font-size: calc(min(3vw, 15px))" href="https://holynski.org/">Aleksander Holynski<sup>2</sup></a><!--don't add a linebreak here! it adds a space!--></li>
+                        <li><a style="font-size: calc(min(3vw, 15px))" href="https://cseweb.ucsd.edu/~ravir/">Ravi Ramamoorthi<sup>1</sup></a></li>
+                        <li><a style="font-size: calc(min(3vw, 15px))" href="https://pratulsrinivasan.github.io/">Pratul P. Srinivasan<sup>2</sup></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-12 text-center" style="font-size: calc(min(3vw, 15px))">
+                <sup>1</sup>UC San Diego&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<sup>2</sup>Google DeepMind&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<sup>3</sup>Google Research&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <br>
+            <sup>4</sup>Columbia University&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<sup>5</sup>University of Maryland&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+	        <div class="col-md-12 text-center" style="font-size: calc(min(3vw, 15px))">
+		</div>
+            </div>
+            <div class="row text-center">
+                <span class="link-block" style="padding-top: 10px; padding-bottom: 10px">
+                    <a href="https://arxiv.org/abs/2405.10314" class="external-link button is-normal is-rounded is-dark"
+                        style="width: 80px; font-size: 15px">
+                        <span class="icon">
+                            <i class="ai ai-arxiv"></i>
+                        </span>
+                        <span>arXiv</span>
+                    </a>
+                </span>
+            </div>
+        </header>
+
+        <main role="main">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <video id="co3d-grid" poster="img/teaser_frame_ours.png" width="100%" autoplay loop muted controls playsinline>
+                        <source src="videos/teaser/output_animation.mp4" type="video/mp4"></source>
+                        A grid of various image to 3D results are shown, ranging from animals, food, fantasy creatures, paintings, and
+                        nature scenes. A zoom reveals an even larger grid of results. The animated CAT3D logo appears.
+                    </video>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 offset-md-2 rounded" style="text-align: center; padding-bottom: 0px; padding-top: 5px; background-color: #d0d5ec;">
+                    <h6 style="text-align: center; color:rgb(0, 0, 0)"><strong>TL;DR</strong>: Choose a target state and make your images consistent</h6>
+                </div>
+            </div><br><br>
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <h3> How it works </h3>
+                    <p class="text-justify" style="text-align: left;">
+   Given a multi-view dataset, we perform generative augmentation with a video model, given the individual images and inconsistency prompts. These images are fed to a multiview generative model along with a held out "target state" image. The model is trained to predict a consistent set of images corresponding to the target state, i.e., the original set of multiview images.
+                    </p>
+                    <video muted loop autoplay src="videos/teaser/explainer.mp4" style="max-width:878px" width=100%>
+                        An animated diagram briefly describing the method. On the left, an input image is shown. Next are samples from the
+                        diffusion model (5 secs), with a spinning camera path. Finally, it shows the optimised 3D Model obtained by
+                        optimizing a NeRF (55 seconds).
+                    </video>
+                </div>
+            </div><br><br>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            
+            <div class="row2">
+                <div class="col-md-8 offset-md-2">
+                    <h3>
+                        Comparisons to other methods
+                    </h3>
+            
+                    <p class="text-justify" style="text-align: left;">
+                        Compare the renders and depth maps of our method CAT3D (right) with baseline methods (left). Try selecting different
+                        methods and scenes!
+                    </p>
+            
+                    <div id="single-image-compare2">
+                        <div class="row m-2">
+                            <div class="col-md-10">
+                                <ul class="nav nav-pills justify-content-center" role="navigation">
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"
+                                            style="width: 110px"><strong>Baseline:</strong></a>
+                                    </li>
+                                    <li class="nav-item method-pill2" data-value="5cond"><a class="nav-link">CAT3D (All Images)</a></li>
+                                    <li class="nav-item method-pill2" data-value="1cond"><a class="nav-link">CAT3D (Single View)</a></li>
+                                </ul>
+                            </div>
+                            <div class="btn-group btn-group-sm col-md-2 d-flex align-items-center" style="padding-top: 5px" id="mode-buttons2">
+                                <button class="btn btn-primary mode-pill" data-value="rgb">
+                                    RGB
+                                </button>
+                                <button class="btn btn-primary mode-pill" data-value="depth">
+                                    Depth
+                                </button>
+                                <button class="btn btn-primary mode-pill" data-value="samples">
+                                    Samples
+                                </button>
+                            </div>
+                        </div>
+            
+                        <div class="video-container container position-relative p-0 d-flex align-items-start">
+                            <!-- Input images container -->
+                            <div class="me-3">
+                                <img class="input-image4" id="input-image-1-2" src="videos/dynamics_videos/inputs/teddy_1.0/inputs/00000.png" alt="Input Image">
+                                <div class="caption4 text-center">Input</div>
+                            </div>
+                        
+                            <!-- Videos and overlays -->
+                            <div class="videos-container position-relative d-flex flex-grow-1">
+                                <video class="video col-6" id="single-comp-left2" loop playsinline autoplay muted></video>
+                                <video class="video col-6" id="single-comp-right2" loop playsinline autoplay muted></video>
+
+                                <!-- Overlays -->
+                                <div class="overlay position-absolute bg-dark top-0 start-0 text-white p-1 opacity-75"
+                                    id="single-comp-label-left2">Baseline</div>
+                                <div class="overlay position-absolute bg-dark top-0 start-50 text-white p-1 opacity-75"
+                                    id="single-comp-label-right2">
+                                    <img src="img/simvs_logo.png" style="width: 48px;">
+                                </div>
+                            </div>
+                        </div>
+            
+            
+                        <div class="pill-row scene-pills2" id="lighting-pills2" role="group" aria-relevant="additions text">
+                            <div class="pill scene-pill2" data-value="teddy_1.0">
+                                <img class="card-img" src="videos/dynamics_videos/inputs/teddy_1.0/inputs/00000.png">
+                            </div>
+                            <div class="pill scene-pill2" data-value="apple_0.67">
+                                <img class="card-img" src="videos/dynamics_videos/inputs/apple_0.67/inputs/00000.png">
+                            </div>
+                            <div class="pill scene-pill2" data-value="paper-windmill_0">
+                                <img class="card-img" src="videos/dynamics_videos/inputs/paper-windmill_0/inputs/00000.png">
+                            </div>
+                            <div class="pill scene-pill2" data-value="block_0.67">
+                                <img class="card-img" src="videos/dynamics_videos/inputs/block_0.67/inputs/00000.png">
+                            </div>
+            
+                            <div class="pill scene-pill2" data-value="space-out_0">
+                                <img class="card-img" src="videos/dynamics_videos/inputs/space-out_0/inputs/00000.png">
+                            </div>
+                            <div class="pill scene-pill2" data-value="wheel_0.67">
+                                <img class="card-img" src="videos/dynamics_videos/inputs/wheel_0.67/inputs/00000.png">
+                            </div>
+                            <div class="pill scene-pill2" data-value="spin_0.67">
+                                <img class="card-img" src="videos/dynamics_videos/inputs/spin_0.67/inputs/00000.png">
+                            </div>
+                        </div>
+            
+                        <script>
+                            let playbackSpeeds2 = [1.0, 1.0];
+                            let aspectRatios2 = 1.5;
+            
+                            let labels2 = {
+                                "5cond": "CAT3D (All images)",
+                                "1cond": "CAT3D (Single View)",
+                            };
+            
+                            let compareDiv2 = document.querySelector("#single-image-compare2");
+                            let activeMethod2 = "5cond";
+                            let activeScene2 = "teddy_1.0";
+                            let activeMode2 = "rgb";
+            
+                            const methodPills2 = compareDiv2.querySelectorAll('.method-pill2');
+                            const modePillParent2 = compareDiv2.querySelector('#mode-buttons2');
+                            const modePills2 = modePillParent2.querySelectorAll('.mode-pill');
+            
+                            for (let modePill2 of modePills2) {
+                                modePill2.addEventListener('click', function () {
+                                    activeMode2 = this.getAttribute('data-value');
+                                    updateDisplay2();
+                                });
+                            }
+            
+                            const videoParent2 = compareDiv2.querySelector(".video-container");
+                            const leftVideo2 = videoParent2.querySelector('#single-comp-left2');
+                            const leftLabel2 = videoParent2.querySelector("#single-comp-label-left2");
+                            const rightVideo2 = videoParent2.querySelector('#single-comp-right2');
+                            const scenePillContainers2 = compareDiv2.querySelectorAll(`.scene-pills2`);
+            
+                            for (let methodPill2 of methodPills2) {
+                                const method2 = methodPill2.getAttribute('data-value');
+                                const scenePillContainer2 = compareDiv2.querySelector(`#lighting-pills2`);
+                                const scenePills2 = scenePillContainer2.querySelectorAll(".scene-pill2");
+            
+                                for (let scenePill2 of scenePills2) {
+                                    scenePill2.addEventListener('click', function () {
+                                        activeScene2 = this.getAttribute("data-value");
+                                        console.log(activeScene2);
+                                        updateDisplay2();
+                                    });
+                                }
+            
+                                methodPill2.addEventListener('click', function () {
+                                    activeMethod2 = method2;
+                                    activeMode2 = "rgb";
+                                    activeScene2 = scenePills2[0].getAttribute("data-value");
+                                    updateDisplay2();
+                                });
+                            }
+            
+                        // Dynamic Display Update Function for 2 Elements
+                        function updateDisplay2() {
+                            const modePillParent2 = document.querySelector('#mode-buttons2');
+                            const methodPills2 = document.querySelectorAll('.method-pill2');
+                            const scenePillContainers2 = document.querySelectorAll('.scene-pills2');
+                            const scenePillContainer2 = document.querySelector('#lighting-pills2');
+                            const scenePills2 = scenePillContainer2.querySelectorAll('.scene-pill2');
+                            const leftVideo2 = document.querySelector('#single-comp-left2');
+                            const rightVideo2 = document.querySelector('#single-comp-right2');
+
+                            let renderDir2 = 'render6';
+
+                            let mode2;
+                            if (activeMode2 === 'depth') {
+                                mode2 = `${renderDir2}/train_preds_step_10000_distance_median`;
+                            } else if (activeMode2 === 'rgb') {
+                                mode2 = `${renderDir2}/train_preds_step_10000_color`;
+                            } else if (activeMode2 === 'samples') {
+                                mode2 = 'samples_vid';
+                            }
+
+                            // Update image sources
+                            document.getElementById('input-image-1-2').src = `videos/grid/${activeScene2.split('_')[0]}.png`;
+
+                            // Update video sources
+                            leftVideo2.src = `videos/dynamics_videos/${activeMethod2}/${activeScene2}/${mode2}.mp4`;
+                            rightVideo2.src = `videos/dynamics_videos/ours_24k/${activeScene2}/${mode2}.mp4`;
+
+                            // Adjust playback speeds
+                            leftVideo2.playbackRate = playbackSpeeds2[0];
+                            rightVideo2.playbackRate = playbackSpeeds2[1];
+
+                            videoParent2.style.aspectRatio = aspectRatios2 * 2.0;
+
+                            leftLabel2.innerHTML = labels2[activeMethod2];
+
+                            // Update active pill styles
+                            methodPills2.forEach(pill => pill.classList.remove('active'));
+                            methodPills2.forEach(pill => {
+                                if (pill.getAttribute('data-value') === activeMethod2) {
+                                    pill.querySelector('a').classList.add('active');
+                                } else {
+                                    pill.querySelector('a').classList.remove('active');
+                                }
+                            });
+
+                            // Update scene pills
+                            scenePills2.forEach(pill => {
+                                if (pill.getAttribute('data-value') === activeScene2) {
+                                    pill.classList.add('active');
+                                } else {
+                                    pill.classList.remove('active');
+                                }
+                            });
+                        }
+
+                        // Initial Display Update
+                        updateDisplay2();
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+            
+
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <h3>
+                        Comparisons to other methods
+                    </h3>
+
+                    <p class="text-justify" style="text-align: left;">
+                        Compare the renders and depth maps of our method CAT3D (right) with baseline methods (left). Try selecting different
+                        methods and scenes!
+                    </p>
+
+                    <div id="single-image-compare">
+                        <div class="row m-2">
+                            <div class="col-md-10">
+                                <ul class="nav nav-pills justify-content-center" role="navigation">
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"
+                                            style="width: 110px"><strong>Baseline:</strong></a>
+                                    </li>
+                                    <li class="nav-item method-pill" data-value="3cond_orig_cat3d"><a class="nav-link">CAT3D (All Images)</span></a></li>
+                                    <li class="nav-item method-pill" data-value="1cond"><a class="nav-link">CAT3D (Single View)</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="btn-group btn-group-sm col-md-2 d-flex align-items-center" style="padding-top: 5px" id="mode-buttons">
+                                <button class="btn btn-primary mode-pill float-right active" data-value="rgb">
+                                    RGB
+                                </button>
+                                <button class="btn btn-primary mode-pill float-right" data-value="depth">
+                                    Depth
+                                </button>
+                                <button class="btn btn-primary mode-pill float-right" data-value="samples">
+                                    Samples
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="video-container container position-relative p-0 d-flex align-items-start">
+                            <!-- Input images container -->
+                            <div class="image-stack d-flex flex-column me-3">
+                                <div class="images-wrapper">
+                                    <img class="input-image" id="input-image-1" src="videos/lighting_inputs/bear/inputs/00000.png" alt="Input Image 1">
+                                    <img class="input-image" id="input-image-2" src="videos/lighting_inputs/bear/inputs/00001.png" alt="Input Image 2">
+                                    <img class="input-image" id="input-image-3" src="videos/lighting_inputs/bear/inputs/00002.png" alt="Input Image 3">
+                                </div>
+                                <div class="caption text-center">Inputs</div>
+                            </div>
+                        
+                            <!-- Videos and overlays -->
+                            <div class="videos-container position-relative d-flex flex-grow-1">
+                                <video class="video col-6" id="single-comp-left" loop playsinline autoplay muted></video>
+                                <video class="video col-6" id="single-comp-right" loop playsinline autoplay muted></video>
+                        
+                                <!-- Overlays -->
+                                <div class="overlay position-absolute bg-dark top-0 start-0 text-white p-1 opacity-75"
+                                    id="single-comp-label-left">Baseline</div>
+                                <div class="overlay position-absolute bg-dark top-0 start-50 text-white p-1 opacity-75"
+                                    id="single-comp-label-right">
+                                    <img src="img/simvs_logo.png" style="width: 48px;">
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="pill-row scene-pills" id="lighting-pills" role="group" aria-relevant="additions text">
+                            <div class="pill scene-pill" data-value="bear">
+                                <img class="card-img" src="videos/lighting_inputs/bear/inputs/00000.png">
+                            </div>
+
+                            <div class="pill scene-pill" data-value="chess">
+                                <img class="card-img" src="videos/lighting_inputs/chess/inputs/00000.png">
+                            </div>
+
+                            <div class="pill scene-pill" data-value="statue">
+                                <img class="card-img" src="videos/lighting_inputs/statue/inputs/00000.png">
+                            </div>
+
+                            <div class="pill scene-pill" data-value="chair">
+                                <img class="card-img" src="videos/lighting_inputs/chair/inputs/00000.png">
+                            </div>
+
+                            <div class="pill scene-pill" data-value="boop">
+                                <img class="card-img" src="videos/lighting_inputs/boop/inputs/00000.png">
+                            </div>
+                    <script>
+                        
+                        
+                        aspectRatios = 1.5;
+
+                        labels = {
+                            "3cond_orig_cat3d": "CAT3D (All images)",
+                            "1cond": "CAT3D (Single View)",
+                        }
+
+                        compareDiv = document.querySelector("#single-image-compare")
+                        activeMethod = "3cond_orig_cat3d"
+                        activeScene = "bear"
+                        activeMode = "rgb"
+
+                        // Select all elements with the class 'method-pill'
+                        const methodPills = compareDiv.querySelectorAll('.method-pill');
+                        const modePillParent = compareDiv.querySelector('#mode-buttons')
+                        const modePills = modePillParent.querySelectorAll('.mode-pill')
+
+                        for (modePill of modePills) {
+                            modePill.addEventListener('click', function () {
+                                activeMode = this.getAttribute('data-value');
+                                updateDisplay();
+                            });
+                        }
+
+
+                        const videoParent = compareDiv.querySelector(".video-container");
+                        const leftVideo = videoParent.querySelector('#single-comp-left')
+                        const leftLabel = videoParent.querySelector("#single-comp-label-left")
+                        const rightVideo = videoParent.querySelector('#single-comp-right')
+                        const scenePillContainers = compareDiv.querySelectorAll(`.scene-pills`);
+
+                        for (methodPill of methodPills) {
+                            const method = methodPill.getAttribute('data-value');
+                            // Select all scene pill containers
+                            const scenePillContainer = compareDiv.querySelector(`#lighting-pills`);
+                            const scenePills = scenePillContainer.querySelectorAll(".scene-pill")
+
+                            for (scenePill of scenePills) {
+                                scenePill.addEventListener('click', function () {
+                                    activeScene = this.getAttribute("data-value")
+                                    console.log(activeScene);
+                                    updateDisplay();
+                                });
+                            }
+
+                            // Attach a click event listener to each pill
+                            methodPill.addEventListener('click', function () {
+                                activeMethod = method
+                                activeMode = "rgb"
+                                const scenePillContainer = compareDiv.querySelector(`#lighting-pills`);
+                                const scenePills = scenePillContainer.querySelectorAll(".scene-pill")
+                                activeScene = scenePills[0].getAttribute("data-value")
+                                updateDisplay();
+                            });
+                        }
+
+                        
+
+                        function updateDisplay() {
+                        modePillParent.style.display = '';
+
+                        // Update active pill
+                        methodPills.forEach(p => p.classList.remove('active'));
+                        methodPills.forEach(methodPill => {
+                            if (methodPill.getAttribute('data-value') === activeMethod) {
+                                methodPill.querySelector('a').classList.add('active');
+                            } else {
+                                methodPill.querySelector('a').classList.remove('active');
+                            }
+                        });
+
+                        // Update mode pill
+                        for (modePill of modePills) {
+                            if (modePill.getAttribute('data-value') === activeMode) {
+                                modePill.classList.add('active');
+                            } else {
+                                modePill.classList.remove('active');
+                            }
+                        }
+
+                        // Show/Hide scene pill containers based on the selected method
+                        scenePillContainers.forEach(container => {
+                            if (container.id === `lighting-pills`) {
+                                container.style.display = ''; // Or 'block' depending on your layout
+                            } else {
+                                container.style.display = 'none';
+                            }
+                        });
+
+                        const scenePillContainer = compareDiv.querySelector(`#lighting-pills`);
+                        const scenePills = scenePillContainer.querySelectorAll(".scene-pill");
+
+                        for (scenePill of scenePills) {
+                            if (scenePill.getAttribute('data-value') === activeScene) {
+                                scenePill.classList.add('active');
+                            } else {
+                                scenePill.classList.remove('active');
+                            }
+                        }
+
+                        let offsetScenes = ['bear', 'chair'];
+                        var offsetDir = '';
+                        var renderDir = 'render2';
+                        if (offsetScenes.includes(activeScene)) {
+                            offsetDir = '';
+                            renderDir = 'render3';
+                        }
+
+                        if (activeMode === 'depth') {
+                            mode = `${renderDir}/test_preds_step_10000_distance_median`;
+                        } else if (activeMode === 'rgb') {
+                            mode = `${renderDir}/test_preds_step_10000_color`;
+                        } else if (activeMode === 'samples') {
+                            mode = 'samples_vid';
+                        }
+
+                        // Dynamically set image sources based on active scene
+                        document.getElementById('input-image-1').src = `videos/lighting_inputs/${activeScene}/inputs/00000.png`;
+                        document.getElementById('input-image-2').src = `videos/lighting_inputs/${activeScene}/inputs/00001.png`;
+                        document.getElementById('input-image-3').src = `videos/lighting_inputs/${activeScene}/inputs/00002.png`;
+
+                        // Update video display
+                        leftVideo.src = `videos/lighting_vids${offsetDir}/${activeMethod}/${activeScene}/${mode}.mp4`;
+                        rightVideo.src = `videos/lighting_vids${offsetDir}/ours/${activeScene}/${mode}.mp4`;
+
+                        if (activeScene === "chair" && activeMode != "samples") {
+                            playbackSpeeds = [3.0, 3.0];
+                        }
+                        else {
+                            playbackSpeeds = [1.0, 1.0];
+                        }
+
+                        var [lr, rr] = playbackSpeeds;
+                        leftVideo.playbackRate = lr;
+                        rightVideo.playbackRate = rr;
+
+                        videoParent.style.aspectRatio = aspectRatios * 2.0;
+
+                        leftLabel.innerHTML = labels[activeMethod];
+                    }
+                    updateDisplay();
+
+
+                    </script>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <h3>Video Samples and Heuristic Augmentations</h3>
+                    <div style="text-align: left;">
+                        Click on the interactive grid to view the video samples in comparison to the original image and various augmentations.
+                    </div>
+                    <div id="single-image-compare" class="container position-relative p-0 d-flex align-items-start">
+                        <style>
+                            .simvs-grid-container {
+                                display: grid;
+                                grid-template-columns: repeat(8, 1fr);
+                                gap: 8px;
+                                width: 100%;
+                                margin: 0;
+                                padding: 0;
+                                contain: layout style paint;
+                            }
+                
+                            .simvs-grid-item {
+                                aspect-ratio: 1;
+                                transform: translateZ(0);
+                                will-change: transform;
+                                contain: layout style paint;
+                            }
+                
+                            .simvs-grid-item img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                border-radius: 6px;
+                                cursor: pointer;
+                                transition: transform 0.2s;
+                                backface-visibility: hidden;
+                                transform: translateZ(0);
+                                will-change: transform;
+                            }
+            
+                            .simvs-grid-item img:hover {
+                                transform: scale(1.05);
+                            }
+                
+                            .simvs-overlay {
+                                display: none;
+                                position: fixed;
+                                top: 0;
+                                left: 0;
+                                width: 100vw;
+                                height: 100vh;
+                                background: rgba(0, 0, 0, 0.95);
+                                z-index: 1000;
+                                justify-content: center;
+                                align-items: center;
+                            }
+                
+                            .simvs-overlay video,
+                            .simvs-overlay img {
+                                max-width: 80%;
+                                max-height: 80vh;
+                                border-radius: 8px;
+                                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                            }
+                
+                            .simvs-controls {
+                                position: absolute;
+                                bottom: 30px;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                z-index: 1001;
+                                display: flex;
+                                gap: 10px;
+                                background: rgba(255, 255, 255, 0.1);
+                                padding: 15px;
+                                border-radius: 12px;
+                                backdrop-filter: blur(10px);
+                            }
+                
+                            .simvs-controls button {
+                                padding: 8px 16px;
+                                border: none;
+                                border-radius: 6px;
+                                font-weight: 500;
+                                transition: all 0.2s;
+                                background: #2563eb;
+                                color: white;
+                            }
+            
+                            .simvs-controls button:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                            }
+            
+                            .simvs-controls button.active {
+                                background: #1d4ed8;
+                            }
+            
+                            .simvs-controls button.close-btn {
+                                background: #dc2626;
+                            }
+            
+                            #single-image-compare {
+                                margin: 20px auto;
+                                max-width: 1200px;
+                                width: 100%;
+                            }
+                        </style>
+            
+                        <div class="simvs-grid-container" id="simvs-grid"></div>
+            
+                        <div class="simvs-overlay" id="simvs-overlay">
+                            <div>
+                                <video id="simvs-overlay-video" autoplay loop muted></video>
+                                <img id="simvs-overlay-image" style="display: none;" />
+                                <div class="simvs-controls">
+                                    <button class="btn active" id="simvs-video-btn">Video Preview</button>
+                                    <button class="btn" id="simvs-dynamics-btn">Dynamic Analysis</button>
+                                    <button class="btn" id="simvs-lighting-btn">Lighting Analysis</button>
+                                    <button class="btn" id="simvs-original-btn">Original</button>
+                                    <button class="btn close-btn" id="simvs-close-btn">Close Preview</button>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <script>
+                            const simvsBaseDir = 'grid';
+                            const simvsGrid = document.getElementById('simvs-grid');
+                            const simvsOverlay = document.getElementById('simvs-overlay');
+                            const simvsOverlayVideo = document.getElementById('simvs-overlay-video');
+                            const simvsOverlayImage = document.getElementById('simvs-overlay-image');
+                            const simvsCloseBtn = document.getElementById('simvs-close-btn');
+                            const simvsVideoBtn = document.getElementById('simvs-video-btn');
+                            const simvsDynamicsBtn = document.getElementById('simvs-dynamics-btn');
+                            const simvsLightingBtn = document.getElementById('simvs-lighting-btn');
+                            const simvsOriginalBtn = document.getElementById('simvs-original-btn');
+            
+                            let simvsCurrentFile = '';
+                            const SEED = 42;
+                            const TOTAL_IMAGES = 1678;
+                            const FIRST_QUARTER = 839;
+                            const GRID_SIZE = 64;
+            
+                            function selectImages() {
+                                // Simply return array of first 64 indices
+                                return Array.from({length: GRID_SIZE}, (_, i) => i);
+                            }
+
+                            function loadImage(src) {
+                                return new Promise((resolve, reject) => {
+                                    const img = new Image();
+                                    img.onload = () => resolve(img);
+                                    img.onerror = reject;
+                                    img.src = src;
+                                    img.fetchPriority = "high";
+                                });
+                            }
+
+                            async function populateSimvsGrid() {
+                                const selectedIndices = selectImages();
+
+                                // Create grid items first
+                                const gridItems = selectedIndices.map(i => {
+                                    const gridItem = document.createElement('div');
+                                    gridItem.classList.add('simvs-grid-item');
+                                    simvsGrid.appendChild(gridItem);
+                                    return gridItem;
+                                });
+            
+                                // Create loading promises
+                                const loadingPromises = selectedIndices.map((i, idx) => {
+                                    const gifPath = `${simvsBaseDir}/thumbnails/${String(i)}.gif`;
+                                    return loadImage(gifPath).then(img => ({img, index: i, gridItem: gridItems[idx]}));
+                                });
+            
+                                // Load all images
+                                try {
+                                    const loadedImages = await Promise.all(loadingPromises);
+                                    loadedImages.forEach(({img, index, gridItem}) => {
+                                        const imgElement = document.createElement('img');
+                                        imgElement.src = img.src;
+                                        imgElement.alt = `Preview ${index}`;
+                                        const videoPath = `${simvsBaseDir}/vid/${String(index)}.mp4`;
+                                        imgElement.addEventListener('click', () => openSimvsOverlay(videoPath));
+                                        gridItem.appendChild(imgElement);
+                                    });
+                                } catch (error) {
+                                    console.error('Error loading images:', error);
+                                }
+                            }
+            
+                            function openSimvsOverlay(filePath) {
+                                simvsOverlay.style.display = 'flex';
+                                simvsOverlayVideo.src = filePath;
+                                simvsOverlayVideo.style.display = 'block';
+                                simvsOverlayImage.style.display = 'none';
+                                simvsCurrentFile = filePath;
+                                updateButtonStates('vid');
+                            }
+            
+                            function updateButtonStates(activeType) {
+                                const buttons = [simvsVideoBtn, simvsDynamicsBtn, simvsLightingBtn, simvsOriginalBtn];
+                                const types = ['vid', 'heuristic', 'color', 'orig'];
+                                
+                                buttons.forEach((btn, index) => {
+                                    btn.classList.toggle('active', types[index] === activeType);
+                                });
+                            }
+            
+                            function switchSimvsOverlay(type) {
+                                const fileName = simvsCurrentFile.split('/').pop().replace('.mp4', '.jpg');
+                                const newPath = `${simvsBaseDir}/${type}/${fileName}`;
+            
+                                if (type === 'vid') {
+                                    simvsOverlayVideo.src = simvsCurrentFile;
+                                    simvsOverlayVideo.style.display = 'block';
+                                    simvsOverlayImage.style.display = 'none';
+                                    simvsOverlayVideo.play();
+                                } else {
+                                    simvsOverlayImage.src = newPath;
+                                    simvsOverlayImage.style.display = 'block';
+                                    simvsOverlayVideo.style.display = 'none';
+                                    simvsOverlayVideo.pause();
+                                }
+                                
+                                updateButtonStates(type);
+                            }
+            
+                            function closeSimvsOverlay() {
+                                simvsOverlay.style.display = 'none';
+                                simvsOverlayVideo.pause();
+                            }
+            
+                            // Event Listeners
+                            simvsVideoBtn.addEventListener('click', () => switchSimvsOverlay('vid'));
+                            simvsDynamicsBtn.addEventListener('click', () => switchSimvsOverlay('heuristic'));
+                            simvsLightingBtn.addEventListener('click', () => switchSimvsOverlay('color'));
+                            simvsOriginalBtn.addEventListener('click', () => switchSimvsOverlay('orig'));
+                            simvsCloseBtn.addEventListener('click', closeSimvsOverlay);
+                            simvsOverlay.addEventListener('click', (e) => {
+                                if (e.target === simvsOverlay) {
+                                    closeSimvsOverlay();
+                                }
+                            });
+            
+                            // Initialize grid when DOM is ready
+                            document.addEventListener('DOMContentLoaded', populateSimvsGrid);
+                        </script>
+                    </div>
+                </div>
+            </div>
+            
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <h3> Method overview </h3>
+                    <image width=100% src="img/pipeline.png"
+                        alt="A diagram explaining the method in broad strokes, like explained in the caption."></image>
+
+                    <figcaption class="text-justify margin-5" style="text-align: left;">
+                    <br>
+                    SimVS augments existing multiview image datasets with inconsistencies typically observed during capture. By sampling image-conditioned videos with the camera static, we may generate a synthetic conditioning set for a multiview generative like CAT3D. By asking the model to harmonize the inputs with respect to a single clean sample, we can train the model to be robust with respect to these inconsistencies. 
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-8 offset-md-2 text-start">
+                <h4>
+                    Acknowledgements
+                </h4>
+
+                <p class="text-justify" style="text-align: left;">
+                    We would like to thank Paul-Edouard Sarlin, Jiamu Sun, Songyou Peng, Richard Tucker, Rick Szeliski and Stan Szymanowicz for insightful conversations and help. We also extend our gratitude to Shlomi Fruchter, Kevin Murphy, Mohammad Babaeizadeh, Han Zhang and Amir Hertz for training the base text-to-image latent diffusion model. This work was supported in part by an NSF Fellowship, ONR grant N00014-23-1-2526, gifts from Google, Adobe, Qualcomm and Rembrand, the Ronald L. Graham Chair, and the UC San Diego Center for Visual Computing. 
+                    <br><br><br>
+                </p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-5 center text-start">
+                    <label style="display: inline" for="bibtex">
+                        <h4 style="text-align: center">BibTeX </h4>
+                    </label>
+                    <textarea id="bibtex" class="form-control" readonly>
+@article{trevithick2024simvs,
+    title={SimVS: Simulating World Inconsistencies for Robust View Synthesis},
+    author={Alex Trevithick and Roni Paiss and Philipp Henzler and Dor Verbin and Rundi Wu and Hadi Alzayer and Ruiqi Gao and Ben Poole and Jonathan T. Barron and Aleksander Holynski and Ravi Ramamoorthi and  Pratul P. Srinivasan
+    },
+    journal={arXiv},
+    year={2024}
+}
+                        </textarea>
+                </div>
+            </div>
+
+        </main>
+        <footer>
+            <div class="row">
+                <div class="col-md-8 offset-md-2 text-start">
+
+                    <p class="text-justify" style="text-align: left;">
+                        <i>
+                            The website template was borrowed from <a href="https://cat3d.github.io/">CAT3D</a>, <a href="http://mgharbi.com/">Michaël Gharbi</a>,
+                            <a href="https://dorverbin.github.io/refnerf">Ref-NeRF</a>, and <a
+                                href="https://reconfusion.github.io">ReconFusion</a>.
+                        </i>
+                    </p>
+                </div>
+            </div>
+
+        </footer>
+    </div>
+</body>
+
+</html>
