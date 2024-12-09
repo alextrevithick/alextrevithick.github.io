@@ -146,15 +146,16 @@
                 <div class="col-md-8 offset-md-2">
                     <h3> How it works </h3>
                     <p class="text-justify" style="text-align: left;">
-        Given a multi-view dataset, we perform generative augmentation with a video model, given the individual images and inconsistency prompts. These images are fed to a multiview generative model along with a held out "target state" image. The model is trained to predict a consistent set of images corresponding to the target state, i.e., the original set of multiview images.
+                        Given a multi-view dataset, we perform generative augmentation with a video model, given the individual images and inconsistency prompts. These images are fed to a multiview generative model along with a held out "target state" image. The model is trained to predict a consistent set of images corresponding to the target state, i.e., the original set of multiview images.
                     </p>
-                    <video muted loop autoplay src="videos/teaser/explainer.mp4" style="max-width:878px" width=100%>
+                    <video muted loop autoplay controls playsinline poster="videos/teaser/explainer.png" src="videos/teaser/explainer.mp4" style="max-width:878px" width=100%>
                         An animated diagram briefly describing the method. On the left, an input image is shown. Next are samples from the
                         diffusion model (5 secs), with a spinning camera path. Finally, it shows the optimised 3D Model obtained by
                         optimizing a NeRF (55 seconds).
                     </video>
                 </div>
-            </div><br><br>
+            </div>
+            <br><br>
 
             <br>
             <br>
@@ -610,9 +611,9 @@
 
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <h3>Video Samples and Heuristic Augmentations</h3>
+                    <h3>Interactive Grid of Video Samples</h3>
                     <div style="text-align: left;">
-                        Click on the interactive grid to view the video samples in comparison to the original image and various augmentations. These videos were sampled from <a href="https://lumiere-video.github.io/">Lumiere</a> using the inconsistency prompt generation methods specified in the paper. Note that some videos include flashing lights.
+                        Click on the interactive grid to view the video samples in comparison to the original image and various augmentations. These videos were sampled from <a href="https://lumiere-video.github.io/">Lumiere</a> using the inconsistency prompt generation methods specified in the paper. We use this data for training SimVS. Note that some videos include flashing lights.
                     </div>
                     <div id="single-image-compare" class="position-relative p-0 d-flex align-items-start w-100">
                         <style>
