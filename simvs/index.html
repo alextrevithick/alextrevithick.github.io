@@ -166,7 +166,7 @@
                     </h3>
             
                     <p class="text-justify" style="text-align: left;">
-                        We take sparse image sets from the <a href="https://hangg7.com/dycheck/">DyCheck</a> and make them consistent with the thumbnail (also top left image of the inputs). Compare the renders, depth maps, and diffusion samples of our method SimVS (right) with CAT3D (left). Note that the samples follow the training camera trajectory which is not smooth.
+                        We take sparse image sets from the <a href="https://hangg7.com/dycheck/">DyCheck</a> and make them consistent with the image in orange. Compare the renders, depth maps, and diffusion samples of our method SimVS (right) with CAT3D (left). Note that the samples follow the training camera trajectory which is not smooth.
                     </p>
             
                     <div id="single-image-compare2">
@@ -182,13 +182,13 @@
                                 </ul>
                             </div>
                             <div class="btn-group btn-group-sm col-md-2 d-flex align-items-center" style="padding-top: 5px" id="mode-buttons2">
-                                <button class="btn btn-primary mode-pill" data-value="rgb">
+                                <button class="btn btn-primary mode-pill float-right active" data-value="rgb">
                                     RGB
                                 </button>
-                                <button class="btn btn-primary mode-pill" data-value="depth">
+                                <button class="btn btn-primary mode-pill float-right" data-value="depth">
                                     Depth
                                 </button>
-                                <button class="btn btn-primary mode-pill" data-value="samples">
+                                <button class="btn btn-primary mode-pill float-right" data-value="samples">
                                     Samples
                                 </button>
                             </div>
@@ -297,6 +297,15 @@
                         // Dynamic Display Update Function for 2 Elements
                         function updateDisplay2() {
                             const modePillParent2 = document.querySelector('#mode-buttons2');
+                            // Add this new section
+                            const modePills2 = modePillParent2.querySelectorAll('.mode-pill');
+                            for (let modePill of modePills2) {
+                                if (modePill.getAttribute('data-value') === activeMode2) {
+                                    modePill.classList.add('active');
+                                } else {
+                                    modePill.classList.remove('active');
+                                }
+                            }
                             const methodPills2 = document.querySelectorAll('.method-pill2');
                             const scenePillContainers2 = document.querySelectorAll('.scene-pills2');
                             const scenePillContainer2 = document.querySelector('#lighting-pills2');
@@ -339,6 +348,7 @@
                                     pill.querySelector('a').classList.remove('active');
                                 }
                             });
+                            
 
                             // Update scene pills
                             scenePills2.forEach(pill => {
@@ -371,7 +381,7 @@
                     </h3>
 
                     <p class="text-justify" style="text-align: left;">
-                        We collect our own dataset of varying illuminations with an iPhone camera, in which the same scene is observed under 3 different lighting conditions. The models reconstruct the scene under the target state specified in the thumbnail and top of the inputs. Compare the renders, depth maps, and diffusion samples of our method SimVS (right) with CAT3D (left).
+                        We collect our own dataset of varying illuminations with an iPhone camera, in which the same scene is observed under 3 different lighting conditions. The models reconstruct the scene under the target state specified in orange. Compare the renders, depth maps, and diffusion samples of our method SimVS (right) with CAT3D (left). In this case, the baseline CAT3D samples supervise a GLO-based NeRF, and the GLO embedding corresponding to the target state image is used for testing.
                     </p>
 
                     <div id="single-image-compare">
