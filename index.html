@@ -322,9 +322,20 @@
     .research-image {
       width: 100%;
       height: 0;
-      padding-bottom: 100%;
+      padding-bottom: 100%; /* Square aspect ratio */
       position: relative;
       overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .research-image a {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 2;
     }
 
     .research-image img, 
@@ -336,6 +347,7 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
+      transition: transform 0.3s ease;
     }
 
     .research-card:hover .research-image img {
@@ -750,6 +762,7 @@
         <!-- SimVS -->
         <div class="research-card fade-in">
           <div class="research-image">
+            <a href="simvs/"></a>
             <img src="images/simvs.gif" alt="SimVS">
           </div>
           <div class="research-content">
@@ -771,6 +784,7 @@
         <!-- CAT4D -->
         <div class="research-card fade-in">
           <div class="research-image">
+            <a href="https://cat-4d.github.io/"></a>
             <img src="images/cat4d.gif" alt="CAT4D">
           </div>
           <div class="research-content">
@@ -792,6 +806,7 @@
         <!-- RealmDreamer -->
         <div class="research-card fade-in">
           <div class="research-image">
+            <a href="https://realmdreamer.github.io/"></a>
             <img src="images/lighthouse.gif" alt="RealmDreamer">
           </div>
           <div class="research-content">
@@ -814,6 +829,7 @@
         <!-- WYSIWYG -->
         <div class="research-card fade-in">
           <div class="research-image">
+            <a href="https://research.nvidia.com/labs/nxp/wysiwyg/"></a>
             <img src="images/output_optimized.gif" alt="WYSIWYG">
           </div>
           <div class="research-content">
@@ -835,6 +851,7 @@
         <!-- AI-mediated 3D Videoconferencing -->
         <div class="research-card fade-in">
           <div class="research-image">
+            <a href="https://research.nvidia.com/labs/nxp/3dvc-siggraph-etech/"></a>
             <img src="images/aimv.gif" alt="AI-mediated 3D Videoconferencing">
           </div>
           <div class="research-content">
@@ -856,6 +873,7 @@
         <!-- Live 3D Portrait -->
         <div class="research-card fade-in">
           <div class="research-image">
+            <a href="https://research.nvidia.com/labs/nxp/lp3d/"></a>
             <img src="images/lp3d.gif" alt="Live 3D Portrait">
           </div>
           <div class="research-content">
@@ -878,6 +896,7 @@
         <!-- NerfDiff -->
         <div class="research-card fade-in">
           <div class="research-image">
+            <a href="https://jiataogu.me/nerfdiff/"></a>
             <img src="images/nerfdiff.gif" alt="NerfDiff">
           </div>
           <div class="research-content">
@@ -899,6 +918,7 @@
         <!-- PVP -->
         <div class="research-card fade-in">
           <div class="research-image">
+            <a href="https://cseweb.ucsd.edu//~viscomp/projects/EGSR23PVP/"></a>
             <img src="images/egsr2023.gif" alt="PVP">
           </div>
           <div class="research-content">
@@ -920,6 +940,7 @@
         <!-- GRF -->
         <div class="research-card fade-in">
           <div class="research-image">
+            <a href="https://arxiv.org/abs/2010.04595"></a>
             <img src="images/vid_real.gif" alt="GRF">
           </div>
           <div class="research-content">
@@ -947,6 +968,14 @@
     <div class="container">
       <h2 class="section-title fade-in">Updates</h2>
       <div class="updates-list fade-in">
+        <div class="update-item">
+          <div class="update-date">8/1/25</div>
+          <div class="update-content">Starting as a Research Scientist at NVIDIA.</div>
+        </div>
+        <div class="update-item">
+          <div class="update-date">12/17/23</div>
+          <div class="update-content">Starting internship at Google DeepMind.</div>
+        </div>
         <div class="update-item">
           <div class="update-date">6/19/23</div>
           <div class="update-content">Starting second internship at NVIDIA AI.</div>
