@@ -1,46 +1,48 @@
 <!DOCTYPE HTML>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Alex Trevithick</title>
-
   <meta name="author" content="Alex Trevithick">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap">
   <link rel="icon" type="image/png" href="images/seal_icon.png">
-  
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/split-type"></script>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BBE72W766K"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-BBE72W766K');
-</script> <!-- Close the Google Analytics script block here -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BBE72W766K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BBE72W766K');
+  </script>
 
-<script>
-  $(document).ready(function() {
-    var token = '6fd1a27edd89b6';
-    var url = 'https://ipinfo.io?token=' + token;
+  <script>
+    $(document).ready(function() {
+      var token = '6fd1a27edd89b6';
+      var url = 'https://ipinfo.io?token=' + token;
 
-    $.getJSON(url, function(data) {
-      var city = data.city;
-      
-      // Send the city information to Google Analytics as an event label
-      gtag('event', 'city_info2', {
-        'event_label': city
+      $.getJSON(url, function(data) {
+        var city = data.city;
+        
+        // Send the city information to Google Analytics as an event label
+        gtag('event', 'city_info2', {
+          'event_label': city
+        });
+      })
+      .fail(function(jqxhr, textStatus, error) {
+        var err = textStatus + ", " + error;
+        console.log("Request Failed: " + err);
       });
-    })
-    .fail(function(jqxhr, textStatus, error) {
-      var err = textStatus + ", " + error;
-      console.log("Request Failed: " + err);
     });
-  });
-</script>
+  </script>
 
-    <!-- Update Outbound Link Tracking to Use gtag.js -->
-    <script>
+  <!-- Update Outbound Link Tracking to Use gtag.js -->
+  <script>
     var captureOutboundLink = function(url) {
       gtag('event', 'click', {
         'event_category': 'outbound',
@@ -51,345 +53,1131 @@
         }
       });
     }
-    </script>
-</head>  
+  </script>
+
+  <style>
+    :root {
+      --primary: #121212;
+      --secondary: #64ffda;
+      --text: #e6e6e6;
+      --text-secondary: #a0a0a0;
+      --accent: #ff5e5b;
+      --background: #121212;
+      --card-bg: rgba(30, 30, 30, 0.7);
+      --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+      --link: #64ffda;          /* New: unvisited link color */
+      --link-hover: #9fffea;    /* New: hover link color */
+      --link-visited: #64ffda;  /* New: visited link color */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--background);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(100, 255, 218, 0.03) 0%, transparent 60%),
+        radial-gradient(circle at 85% 85%, rgba(255, 94, 91, 0.03) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(18, 18, 18, 1) 0%, rgba(24, 24, 28, 1) 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: rgba(18, 18, 18, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      padding: 1rem 0;
+      transition: var(--transition);
+    }
+
+    .navbar-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--secondary);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--secondary);
+      transition: var(--transition);
+    }
+
+    .nav-link:hover {
+      color: var(--secondary);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .hero-subtitle {
+      color: var(--secondary);
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+
+    .hero-description {
+      max-width: 600px;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-link {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hero-link:hover {
+      color: var(--secondary);
+      transform: translateY(-3px);
+    }
+
+    .hero-image {
+      display: none;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: transparent;
+      color: var(--secondary);
+      border: 1px solid var(--secondary);
+      border-radius: 4px;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      background-color: rgba(100, 255, 218, 0.1);
+      transform: translateY(-3px);
+    }
+
+    /* About Section */
+    .section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: var(--secondary);
+      bottom: -10px;
+      left: 0;
+    }
+
+    .about-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .about-text {
+      color: var(--text-secondary);
+    }
+
+    .about-text p {
+      margin-bottom: 1.5rem;
+    }
+
+    .about-image {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .about-image img {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Research Section */
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .research-card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: var(--transition);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .research-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .research-image {
+      width: 100%;
+      height: 0;
+      padding-bottom: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .research-image img, 
+    .research-image video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .research-card:hover .research-image img {
+      transform: scale(1.05);
+    }
+
+    .research-content {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .research-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .research-authors {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .research-venue {
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+    }
+
+    .research-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .research-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: auto;
+    }
+
+    .research-link {
+      font-size: 0.85rem;
+      color: var(--link);
+      text-decoration: none;
+      transition: var(--transition);
+      font-weight: 600;
+    }
+
+    .research-link:hover {
+      color: var(--link-hover);
+    }
+
+    .research-link:visited {
+      color: var(--link-visited);
+    }
+
+    /* Updates Section */
+    .updates-list {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .update-item {
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .update-item:last-child {
+      border-bottom: none;
+    }
+
+    .update-date {
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .update-content {
+      color: var(--text-secondary);
+    }
+
+    /* Teaching Section */
+    .teaching-item {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: var(--transition);
+    }
+
+    .teaching-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .teaching-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .teaching-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .teaching-content {
+      flex-grow: 1;
+    }
+
+    .teaching-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .teaching-description {
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    .footer {
+      padding: 3rem 0;
+      text-align: center;
+      color: var(--text-secondary);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .footer-link {
+      color: var(--text);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-link:hover {
+      color: var(--secondary);
+    }
+
+    .footer-credit {
+      display: none;
+    }
+
+    /* Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .hero-title {
+        font-size: 4rem;
+      }
+      
+      .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .about-image {
+        order: -1;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 3rem;
+      }
+      
+      .hero-image {
+        display: none;
+      }
+      
+      .research-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .teaching-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    }
+
+    /* Particle Background */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    /* Scroll Progress Bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background-color: var(--secondary);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s ease;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 300px;
+        height: 100vh;
+        background-color: var(--primary);
+        flex-direction: column;
+        padding: 2rem;
+        transition: right 0.3s ease;
+      }
+      
+      .nav-links.active {
+        right: 0;
+      }
+    }
+
+    /* Global link styles */
+    a {
+      color: var(--link);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    a:hover {
+      color: var(--link-hover);
+    }
+
+    a:visited {
+      color: var(--link-visited);
+    }
+
+    /* About section link styles */
+    .about-text a {
+      color: var(--link);
+      font-weight: 500;
+      border-bottom: 1px dashed rgba(100, 255, 218, 0.4);
+      padding-bottom: 1px;
+    }
+
+    .about-text a:hover {
+      color: var(--link-hover);
+      border-bottom: 1px dashed var(--link-hover);
+    }
+
+    .about-text a:visited {
+      color: var(--link-visited);
+    }
+  </style>
+</head>
 
 <body>
-  <table style="width:100%;max-width:900px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-    <tr style="padding:0px">
-      <td style="padding:0px">
-        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-          <tr style="padding:0px">
-            <td style="padding:2.5%;width:63%;vertical-align:middle">
-              <p style="text-align:center">
-                <name>Alex Trevithick</name>
-              </p>
-              <p>I am a <strong>final-year</strong> PhD candidate at <a href="https://cse.ucsd.edu/">UC San Diego</a>, advised by Professor <a href="http://cseweb.ucsd.edu/~ravir/">Ravi Ramamoorthi</a>. In the past, I have had the fortune to work at the <a href="http://gvv.mpi-inf.mpg.de/index.html">Max Planck Institute</a> and the <a href=https://www.exeter.ox.ac.uk/>University of Oxford</a>. 
-                 I spent 1.5 years at <a href="https://www.nvidia.com/en-us/research/">NVIDIA AI</a> working with <a href="https://luminohope.org/">Koki Nagano</a>. I'm currently at <a href="https://deepmind.google/">Google DeepMind</a> as a Student Researcher with <a href="https://pratulsrinivasan.github.io/">Pratul Srinivasan</a>. <br><br> I'm lucky to be supported by an <a href="https://www.nsfgrfp.org/">NSF Graduate Research Fellowship</a> and Jacobs School of Engineering Fellowship. 
-                <br><br> 
-                I'm currently looking for what's next!
-              </p>
-              <p style="text-align:center">
-                <a href="mailto:atrevithick@ucsd.edu">Email</a> &nbsp/&nbsp
-                <a href="trevithick-cv.pdf" onclick="captureOutboundLink('trevithick-cv.pdf'); return false;">CV</a> &nbsp/&nbsp
-                <a href="https://twitter.com/alextrevith">Twitter</a> &nbsp/&nbsp
-                <a href="https://scholar.google.com/citations?user=rnP-s5UAAAAJ&hl=en&oi=sra">Scholar</a> &nbsp/&nbsp
-                <a href="https://github.com/alextrevithick">GitHub</a>
-              </p>
-            </td>
-            <td style="padding:2.5%;width:40%;max-width:40%">
-              <a href="images/IMG_4995.png"><img style="width:100%;max-width:100%" alt="profile photo" src="images/IMG_4995.png" class="hoverZoomLink"></a>
-            </td>
-          </tr>
-        </tbody></table>
-        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-            <tr>
-            <td style="padding:20px;width:100%;vertical-align:middle">
-              <heading>Research</heading>
-              <p>
-                I'm interested in training and leveraging generative models for computer vision, especially pushing towards 4D reconstruction, real-time inference, and photorealistic generation 
-              </p>
-            </td>
-          </tr>
-        </tbody></table>
-        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-          <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="images/simvs.gif" style="width:100%;">
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="simvs/">
-                <papertitle>SimVS: Simulating World Inconsistencies for Robust View Synthesis</papertitle>
-              </a>
-              <br>
-                <strong>Alex Trevithick</strong>,
-                <a style="font-size: calc(min(3vw, 15px))" href="https://scholar.google.com/citations?user=-KSDNZQAAAAJ&hl=en">Roni Paiss</a>,
-                <a style="font-size: calc(min(3vw, 15px))" href="https://henzler.github.io/">Philipp Henzler</a>,
-                <a style="font-size: calc(min(3vw, 15px))" href="https://dorverbin.github.io/">Dor Verbin</a>,
-                <a style="font-size: calc(min(3vw, 15px))" href="https://www.cs.columbia.edu/~rundi/">Rundi Wu</a>,
-                <a style="font-size: calc(min(3vw, 15px))" href="https://hadizayer.github.io/">Hadi Alzayer</a>,
-                <a style="font-size: calc(min(3vw, 15px))" href="https://ruiqigao.github.io/">Ruiqi Gao</a>,
-                <a style="font-size: calc(min(3vw, 15px))"  href="https://poolio.github.io/">Ben Poole</a>,
-                <a style="font-size: calc(min(3vw, 15px))" href="https://jonbarron.info/">Jonathan T. Barron</a>,
-                <a style="font-size: calc(min(3vw, 15px))" href="https://holynski.org/">Aleksander Holynski</a>,
-                <a style="font-size: calc(min(3vw, 15px))" href="https://cseweb.ucsd.edu/~ravir/">Ravi Ramamoorthi</a>,
-                <a style="font-size: calc(min(3vw, 15px))" href="https://pratulsrinivasan.github.io/">Pratul P. Srinivasan</a>
-              <br>
-              <em>Computer Vision and Pattern Recognition (CVPR)</em>, 2025
-              <br>
-              <a href="simvs/">project page</a> /
-              <a href="https://arxiv.org/abs/2412.07696">paper</a> 
-              <p></p>
-              <p>Turn inconsistent captures into consistent multiview images through simulation with video models.</p>
-            </td>
-          </tr>
+  <!-- Progress Bar -->
+  <div class="progress-bar"></div>
 
-          <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="images/cat4d.gif" style="width:100%;">
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://cat-4d.github.io/">
-                <papertitle>CAT4D: Create Anything in 4D with Multi-View Video Diffusion Models</papertitle>
-              </a>
-              <br>
-              <a href="https://www.cs.columbia.edu/~rundi/">Rundi Wu</a>,
-              <a href="https://ruiqigao.github.io/">Ruiqi Gao</a>,
-              <a href="https://poolio.github.io/">Ben Poole</a>,
-              <strong>Alex Trevithick</strong>,
-              <a href="https://www.cs.columbia.edu/~cxz/">Changxi Zheng</a>,
-              <a href="https://jonbarron.info/">Jonathan T. Barron</a>,
-              <a href="https://holynski.org/" target="_blank">Aleksander Holynski</a>
-              <br>
-              <em>Computer Vision and Pattern Recognition (CVPR)</em>, 2025
-              <br>
-              <a href="https://cat-4d.github.io/">project page</a> /
-              <a href="https://arxiv.org/abs/2411.18613">paper</a> 
-              <p></p>
-              <p>Sample 4D scenes from text, video, or sparse images.</p>
-            </td>
-          </tr>
+  <!-- Particle Background -->
+  <div class="particles" id="particles-js"></div>
 
-          <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="images/lighthouse.gif" style="width:100%;">
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://realmdreamer.github.io/">
-                <papertitle>RealmDreamer: Text-Driven 3D Scene Generation with Inpainting and Depth Diffusion</papertitle>
-              </a>
-              <br>
-              <a href="https://jaidevshriram.com/" target="_blank">Jaidev Shriram</a>*,
-              <strong>Alex Trevithick</strong>*,
-              <a href="https://lingjie0206.github.io/">Lingjie Liu</a>,
-              <a href="https://cseweb.ucsd.edu/~ravir/" target="_blank">Ravi Ramamoorthi</a>
-              <br>
-              <em>International Conference on 3D Vision (3DV)</em>, 2025
-              <br>
-              <a href="https://realmdreamer.github.io/">project page</a> /
-              <a href="https://arxiv.org/abs/2404.07199">paper</a> /
-              <a href="https://github.com/jaidevshriram/realmdreamer">code</a>
-              <p></p>
-              <p>Sample 3D scenes from text with diffusion.</p>
-            </td>
-          </tr>
-          
-          <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="images/output_optimized.gif" style="width:100%;">
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://research.nvidia.com/labs/nxp/wysiwyg/">
-                <papertitle>What You See Is What You GAN: Rendering Every Pixel for High-Fidelity Geometry in 3D GANs</papertitle>
-              </a>
-              <br>
-              <strong>Alex Trevithick</strong>,
-              <a href="https://matthew-a-chan.github.io" target="_blank">Matthew Chan</a>,
-              <a href="https://tovacinni.github.io/" target="_blank">Towaki Takikawa</a>,
-              <a href="https://www.umariqbal.info/" target="_blank">Umar Iqbal</a>,
-              <a href="https://research.nvidia.com/person/shalini-de-mello" target="_blank">Shalini De Mello</a>,
-              <a href="https://cseweb.ucsd.edu/~mkchandraker/" target="_blank">Manmohan Chandraker</a>,
-              <a href="https://cseweb.ucsd.edu/~ravir/" target="_blank">Ravi Ramamoorthi</a>,
-              <a href="https://luminohope.org/" target="_blank">Koki Nagano</a>
-              <br>
-              <em>Computer Vision and Pattern Recognition (CVPR)</em>, 2024
-              <br>
-              <a href="https://research.nvidia.com/labs/nxp/wysiwyg/">project page</a> /
-              <a href="https://research.nvidia.com/labs/nxp/wysiwyg/media/WYSIWYG.pdf">paper</a> 
-              <p></p>
-              <p> Photorealistic geometry in 3D generative models by rendering every pixel. </p>
-            </td>
-          </tr>
-          
-          <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="images/aimv.gif" style="width:100%;">
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://research.nvidia.com/labs/nxp/3dvc-siggraph-etech/">
-                <papertitle>AI-mediated 3D Videoconferencing</papertitle>
-              </a>
-              <br>
-              <a href="https://research.nvidia.com/person/michael-stengel" target="_blank">Michael Stengel</a>,
-              <a href="https://luminohope.org/" target="_blank">Koki Nagano</a>
-              <a href="https://research.nvidia.com/person/chao-liu" target="_blank">Chao Liu</a>,
-              <a href="https://matthew-a-chan.github.io" target="_blank">Matthew Chan</a>,
-              <strong>Alex Trevithick</strong>,
-              <a href="https://research.nvidia.com/person/shalini-de-mello" target="_blank">Shalini De Mello</a>,
-              <a href="https://research.nvidia.com/person/jonghyun-kim" target="_blank">Jonghyun Kim</a>,
-              <a href="https://luebke.us/" target="_blank">David Luebke</a>, 
-              <a href="http://amritamaz.net/" target="_blank">Amrita Mazumdar</a>,
-              <a href="https://mcmvmc.github.io/" target="_blank">Shengze Wang</a>,
-              <a href="https://www.linkedin.com/in/mayoorejaiswal/" target="_blank">Mayoore Jaiswal</a>
-              <br>
-              <em>SIGGRAPH Emerging Technologies</em>, 2023
-              <br>
-              <a href="https://research.nvidia.com/labs/nxp/3dvc-siggraph-etech/">project page</a> /
-              <a href="https://research.nvidia.com/labs/nxp/3dvc-siggraph-etech/media/etech_abstract.pdf">paper</a> 
-              <p></p>
-              <p> Real-time demo for immersive 3D videoconferencing built with Live 3D Portrait. </p>
-            </td>
-          </tr>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container navbar-container">
+      <a href="#" class="logo">Alex Trevithick</a>
+      <div class="nav-links">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#research" class="nav-link">Research</a>
+        <a href="#updates" class="nav-link">Updates</a>
+        <a href="#teaching" class="nav-link">Teaching</a>
+        <a href="trevithick-cv.pdf" class="nav-link" onclick="captureOutboundLink('trevithick-cv.pdf'); return false;">CV</a>
+      </div>
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
 
-          <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="images/lp3d.gif" style="width:100%;">
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://research.nvidia.com/labs/nxp/lp3d/">
-                <papertitle>Real-Time Radiance Fields for Single-Image Portrait View Synthesis</papertitle>
-              </a>
-              <br>
-              <strong>Alex Trevithick</strong>,
-              <a href="https://matthew-a-chan.github.io" target="_blank">Matthew Chan</a>,
-              <a href="https://research.nvidia.com/person/michael-stengel" target="_blank">Michael Stengel</a>,
-              <a href="https://ericryanchan.github.io" target="_blank">Eric R. Chan</a>,
-              <a href="https://research.nvidia.com/person/chao-liu" target="_blank">Chao Liu</a>,
-              <a href="https://chrisding.github.io/" target="_blank">Zhiding Yu</a>,
-              <a href="https://www.samehkhamis.com/" target="_blank">Sameh Khamis</a>, 
-              <a href="https://cseweb.ucsd.edu/~mkchandraker/" target="_blank">Manmohan Chandraker</a>,
-              <a href="https://cseweb.ucsd.edu/~ravir/" target="_blank">Ravi Ramamoorthi</a>,
-              <a href="https://luminohope.org/" target="_blank">Koki Nagano</a>
-              <br>
-              <em>ACM Transactions on Graphics (SIGGRAPH)</em>, 2023
-              <br>
-              <a href="https://research.nvidia.com/labs/nxp/lp3d/">project page</a> /
-              <a href="https://arxiv.org/abs/2305.02310">paper</a> /
-              <a href="https://www.youtube.com/watch?v=CyIqd_HR6rY">two minute papers</a>
-              <p></p>
-              <p> Real-time encoding and view synthesis from a single portrait image learned with strictly synthetic data. </p>
-            </td>
-          </tr>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h3 class="hero-subtitle fade-in">Hello, I'm</h3>
+      <h1 class="hero-title fade-in">Alex Trevithick</h1>
+      <p class="hero-description fade-in">
+        I'm a final-year PhD candidate at UC San Diego, focused on training and leveraging generative models for computer vision, especially pushing towards 4D reconstruction, real-time inference, and photorealistic generation.
+      </p>
+      <div class="hero-links fade-in">
+        <a href="mailto:atrevithick@ucsd.edu" class="hero-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          Email
+        </a>
+        <a href="https://twitter.com/alextrevith" class="hero-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+          Twitter
+        </a>
+        <a href="https://scholar.google.com/citations?user=rnP-s5UAAAAJ&hl=en&oi=sra" class="hero-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+          Scholar
+        </a>
+        <a href="https://github.com/alextrevithick" class="hero-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          GitHub
+        </a>
+      </div>
+      <a href="#about" class="btn fade-in">Learn more about me</a>
+    </div>
+  </section>
 
-           <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="images/nerfdiff.gif" style="width:100%;">
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://jiataogu.me/nerfdiff/">
-                <papertitle>NerfDiff: Single-image View Synthesis with NeRF-guided Distillation from 3D-aware Diffusion</papertitle>
-              </a>
-              <br>
-              <a href="https://jiataogu.me/">Jiatao Gu</a>,
-              <strong>Alex Trevithick</strong>,
-              <a href="https://cseweb.ucsd.edu/~k2lin/">Kai-En Lin</a>,
-              <a href="https://www.linkedin.com/in/joshua-susskind-8ab2ab5">Josh Susskind</a>,
-              <a href="https://www.mpi-inf.mpg.de/~theobalt">Christian Theobalt</a>,
-              <a href="https://lingjie0206.github.io/">Lingjie Liu</a>,
-              <a href="https://cseweb.ucsd.edu/~ravir/">Ravi Ramamoorthi</a>
-              <br>
-              <em>International Conference on Machine Learning (ICML)</em>, 2023
-              <br>
-              <a href="https://jiataogu.me/nerfdiff/">project page</a> /
-              <a href="https://arxiv.org/abs/2302.10109">paper</a> /
-              code 
-              <p></p>
-              <p> Distill the knowledge of a 3D-aware conditional diffusion model into a triplane NeRF. </p>
-            </td>
-          </tr>
+  <!-- About Section -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">About Me</h2>
+      <div class="about-content">
+        <div class="about-image fade-in">
+          <img src="images/IMG_4995.png" alt="Alex Trevithick">
+        </div>
+        <div class="about-text fade-in">
+          <p>
+            I am a <strong>final-year</strong> PhD candidate at <a href="https://cse.ucsd.edu/">UC San Diego</a>, advised by Professor <a href="http://cseweb.ucsd.edu/~ravir/">Ravi Ramamoorthi</a>. In the past, I have had the fortune to work at the <a href="http://gvv.mpi-inf.mpg.de/index.html">Max Planck Institute</a> and the <a href="https://www.exeter.ox.ac.uk/">University of Oxford</a>.
+          </p>
+          <p>
+            I spent 1.5 years at <a href="https://www.nvidia.com/en-us/research/">NVIDIA AI</a> working with <a href="https://luminohope.org/">Koki Nagano</a>. I'm currently at <a href="https://deepmind.google/">Google DeepMind</a> as a Student Researcher with <a href="https://pratulsrinivasan.github.io/">Pratul Srinivasan</a>.
+          </p>
+          <p>
+            I'm lucky to be supported by an <a href="https://www.nsfgrfp.org/">NSF Graduate Research Fellowship</a> and Jacobs School of Engineering Fellowship.
+          </p>
+          <p>
+            <strong>I'm currently looking for what's next!</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="images/egsr2023.gif" style="width:100%;">
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://cseweb.ucsd.edu//~viscomp/projects/EGSR23PVP/">
-                <papertitle>PVP: Personalized Video Prior for Editable Dynamic Portraits using StyleGAN</papertitle>
-              </a>
-              <br>
-              <a href="https://cseweb.ucsd.edu/~k2lin/" target="_blank">Kai-En Lin</a>,
-              <strong>Alex Trevithick</strong>,
-              <a href="https://scholar.google.com/citations?user=rwc23EsAAAAJ&hl=en" target="_blank">Keli Chang</a>,
-              <a href="https://scholar.google.com/citations?user=B4Q4lTAAAAAJ&hl=en" target="_blank">Michel Sarkis</a>,
-              <a href="https://mohsenghafoorian.eu/" target="_blank">Mohsen Ghafoorian</a>,
-              <a href="https://www.linkedin.com/in/ning-bi-74688817/" target="_blank">Ning Bi</a>,
-              <a href="https://scholar.google.com/citations?user=IVFjU50AAAAJ&hl=zh-TW" target="_blank">Gerhard Reitmayr</a>,
-              <a href="https://cseweb.ucsd.edu/~ravir/" target="_blank">Ravi Ramamoorthi</a>
-              <br>
-              <em>Computer Graphics Forum (EGSR)</em>, 2023
-              <br>
-              <a href="https://cseweb.ucsd.edu//~viscomp/projects/EGSR23PVP/">project page</a> /
-              <a href="https://arxiv.org/pdf/2306.17123.pdf">paper</a> 
-              <p></p>
-              <p> Leverage the StyleGAN latent space for multi view consistent edits in real-time. </p>
-            </td>
-          </tr>
-          
-          <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="images/vid_real.gif" style="width:100%;">
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://github.com/alextrevithick/GRF">
-                <papertitle>GRF: Learning a General Radiance Field for 3D Scene Representation and Rendering</papertitle>
-              </a>
-              <br>
-              <strong>Alex Trevithick</strong>,
-              <a href="https://yang7879.github.io/">Bo Yang</a>
-              <br>
-              <em>International Conference on Computer Vision (ICCV)</em>, 2021
-              <br>
-              <a href="https://arxiv.org/abs/2010.04595">paper</a> /
-              <a href="https://github.com/alextrevithick/GRF">code</a> /
-              <a href="https://www.youtube.com/watch?v=nyLqnyMGfqs">video</a>
-              <p></p>
-              <p>Per-pixel features improve NeRF and allow it to generalize to new scenes without retraining.</p>
-            </td>
-          </tr>
+  <!-- Research Section -->
+  <section id="research" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Research</h2>
+      <p class="fade-in" style="margin-bottom: 3rem; color: var(--text-secondary);">
+        I'm interested in training and leveraging generative models for computer vision, especially pushing towards 4D reconstruction, real-time inference, and photorealistic generation.
+      </p>
+      <div class="research-grid">
+        <!-- SimVS -->
+        <div class="research-card fade-in">
+          <div class="research-image">
+            <img src="images/simvs.gif" alt="SimVS">
+          </div>
+          <div class="research-content">
+            <h3 class="research-title">SimVS: Simulating World Inconsistencies for Robust View Synthesis</h3>
+            <p class="research-authors">
+              <strong>Alex Trevithick</strong>, Roni Paiss, Philipp Henzler, Dor Verbin, Rundi Wu, Hadi Alzayer, Ruiqi Gao, Ben Poole, Jonathan T. Barron, Aleksander Holynski, Ravi Ramamoorthi, Pratul P. Srinivasan
+            </p>
+            <p class="research-venue">Computer Vision and Pattern Recognition (CVPR), 2025</p>
+            <p class="research-description">
+              Turn inconsistent captures into consistent multiview images through simulation with video models.
+            </p>
+            <div class="research-links">
+              <a href="simvs/" class="research-link">Project Page</a>
+              <a href="https://arxiv.org/abs/2412.07696" class="research-link">Paper</a>
+            </div>
+          </div>
+        </div>
 
-        </tbody></table>
+        <!-- CAT4D -->
+        <div class="research-card fade-in">
+          <div class="research-image">
+            <img src="images/cat4d.gif" alt="CAT4D">
+          </div>
+          <div class="research-content">
+            <h3 class="research-title">CAT4D: Create Anything in 4D with Multi-View Video Diffusion Models</h3>
+            <p class="research-authors">
+              Rundi Wu, Ruiqi Gao, Ben Poole, <strong>Alex Trevithick</strong>, Changxi Zheng, Jonathan T. Barron, Aleksander Holynski
+            </p>
+            <p class="research-venue">Computer Vision and Pattern Recognition (CVPR), 2025</p>
+            <p class="research-description">
+              Sample 4D scenes from text, video, or sparse images.
+            </p>
+            <div class="research-links">
+              <a href="https://cat-4d.github.io/" class="research-link">Project Page</a>
+              <a href="https://arxiv.org/abs/2411.18613" class="research-link">Paper</a>
+            </div>
+          </div>
+        </div>
 
-        <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
-          <tr>
-            <td>
-              <heading>Updates</heading>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:20px;width:100%;vertical-align:middle">
-              <p><strong>6/19/23:</strong> Starting second internship at NVIDIA AI.</p>
-              <p><strong>6/8/23:</strong> Giving talk at the annual UCSD visual computing retreat.</p>
-              <p><strong>5/29/23:</strong> <a href="https://youtu.be/i-wpzS9ZsCs?t=3894"> Jensen presents our work at Computex!</a></p>
-              <p><strong>5/26/23:</strong> Giving talk at Google Labs on Live 3D Portrait.</p>
-            </td>
-          </tr>
-        </tbody></table>
+        <!-- RealmDreamer -->
+        <div class="research-card fade-in">
+          <div class="research-image">
+            <img src="images/lighthouse.gif" alt="RealmDreamer">
+          </div>
+          <div class="research-content">
+            <h3 class="research-title">RealmDreamer: Text-Driven 3D Scene Generation with Inpainting and Depth Diffusion</h3>
+            <p class="research-authors">
+              Jaidev Shriram*, <strong>Alex Trevithick</strong>*, Lingjie Liu, Ravi Ramamoorthi
+            </p>
+            <p class="research-venue">International Conference on 3D Vision (3DV), 2025</p>
+            <p class="research-description">
+              Sample 3D scenes from text with diffusion.
+            </p>
+            <div class="research-links">
+              <a href="https://realmdreamer.github.io/" class="research-link">Project Page</a>
+              <a href="https://arxiv.org/abs/2404.07199" class="research-link">Paper</a>
+              <a href="https://github.com/jaidevshriram/realmdreamer" class="research-link">Code</a>
+            </div>
+          </div>
+        </div>
 
-        <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
-          <tr>
-            <td>
-              <heading>Teaching</heading>
-            </td>
-          </tr>
-        </tbody></table>
-        <table width="100%" align="center" border="0" cellpadding="20"><tbody>
-          <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="images/williams.jpg" style="width:100%;">
-            </td>
-            <td width="75%" valign="center">
-              <a href="https://web.williams.edu/Mathematics/lg5/402/index.html" onclick="captureOutboundLink('https://web.williams.edu/Mathematics/lg5/402/index.html'); return false;">Teaching Assistant in Measure Theory and Hilbert Spaces, Fall 2020</a>
-              <br>
-              <br>
-              Teaching Assistant in Computational Linear Algebra, Fall 2018</a>
-            </td>
-          </tr>
-          <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
-          <tr>              
-          </tr>
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-          <tr>
-            <td style="padding-left:560px">
-                <a href="https://jonbarron.info/">Thanks to Jon for this template!</a>
-              </p>
-            </td>
-          </tr>
-        </tbody></table>
+        <!-- WYSIWYG -->
+        <div class="research-card fade-in">
+          <div class="research-image">
+            <img src="images/output_optimized.gif" alt="WYSIWYG">
+          </div>
+          <div class="research-content">
+            <h3 class="research-title">What You See Is What You GAN: Rendering Every Pixel for High-Fidelity Geometry in 3D GANs</h3>
+            <p class="research-authors">
+              <strong>Alex Trevithick</strong>, Matthew Chan, Towaki Takikawa, Umar Iqbal, Shalini De Mello, Manmohan Chandraker, Ravi Ramamoorthi, Koki Nagano
+            </p>
+            <p class="research-venue">Computer Vision and Pattern Recognition (CVPR), 2024</p>
+            <p class="research-description">
+              Photorealistic geometry in 3D generative models by rendering every pixel.
+            </p>
+            <div class="research-links">
+              <a href="https://research.nvidia.com/labs/nxp/wysiwyg/" class="research-link">Project Page</a>
+              <a href="https://research.nvidia.com/labs/nxp/wysiwyg/media/WYSIWYG.pdf" class="research-link">Paper</a>
+            </div>
+          </div>
+        </div>
 
+        <!-- AI-mediated 3D Videoconferencing -->
+        <div class="research-card fade-in">
+          <div class="research-image">
+            <img src="images/aimv.gif" alt="AI-mediated 3D Videoconferencing">
+          </div>
+          <div class="research-content">
+            <h3 class="research-title">AI-mediated 3D Videoconferencing</h3>
+            <p class="research-authors">
+              Michael Stengel, Koki Nagano, Chao Liu, Matthew Chan, <strong>Alex Trevithick</strong>, Shalini De Mello, Jonghyun Kim, David Luebke, Amrita Mazumdar, Shengze Wang, Mayoore Jaiswal
+            </p>
+            <p class="research-venue">SIGGRAPH Emerging Technologies, 2023</p>
+            <p class="research-description">
+              Real-time demo for immersive 3D videoconferencing built with Live 3D Portrait.
+            </p>
+            <div class="research-links">
+              <a href="https://research.nvidia.com/labs/nxp/3dvc-siggraph-etech/" class="research-link">Project Page</a>
+              <a href="https://research.nvidia.com/labs/nxp/3dvc-siggraph-etech/media/etech_abstract.pdf" class="research-link">Paper</a>
+            </div>
+          </div>
+        </div>
 
-      </td>
-    </tr>
-  </table>
+        <!-- Live 3D Portrait -->
+        <div class="research-card fade-in">
+          <div class="research-image">
+            <img src="images/lp3d.gif" alt="Live 3D Portrait">
+          </div>
+          <div class="research-content">
+            <h3 class="research-title">Real-Time Radiance Fields for Single-Image Portrait View Synthesis</h3>
+            <p class="research-authors">
+              <strong>Alex Trevithick</strong>, Matthew Chan, Michael Stengel, Eric R. Chan, Chao Liu, Zhiding Yu, Sameh Khamis, Manmohan Chandraker, Ravi Ramamoorthi, Koki Nagano
+            </p>
+            <p class="research-venue">ACM Transactions on Graphics (SIGGRAPH), 2023</p>
+            <p class="research-description">
+              Real-time encoding and view synthesis from a single portrait image learned with strictly synthetic data.
+            </p>
+            <div class="research-links">
+              <a href="https://research.nvidia.com/labs/nxp/lp3d/" class="research-link">Project Page</a>
+              <a href="https://arxiv.org/abs/2305.02310" class="research-link">Paper</a>
+              <a href="https://www.youtube.com/watch?v=CyIqd_HR6rY" class="research-link">Two Minute Papers</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- NerfDiff -->
+        <div class="research-card fade-in">
+          <div class="research-image">
+            <img src="images/nerfdiff.gif" alt="NerfDiff">
+          </div>
+          <div class="research-content">
+            <h3 class="research-title">NerfDiff: Single-image View Synthesis with NeRF-guided Distillation from 3D-aware Diffusion</h3>
+            <p class="research-authors">
+              Jiatao Gu, <strong>Alex Trevithick</strong>, Kai-En Lin, Josh Susskind, Christian Theobalt, Lingjie Liu, Ravi Ramamoorthi
+            </p>
+            <p class="research-venue">International Conference on Machine Learning (ICML), 2023</p>
+            <p class="research-description">
+              Distill the knowledge of a 3D-aware conditional diffusion model into a triplane NeRF.
+            </p>
+            <div class="research-links">
+              <a href="https://jiataogu.me/nerfdiff/" class="research-link">Project Page</a>
+              <a href="https://arxiv.org/abs/2302.10109" class="research-link">Paper</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PVP -->
+        <div class="research-card fade-in">
+          <div class="research-image">
+            <img src="images/egsr2023.gif" alt="PVP">
+          </div>
+          <div class="research-content">
+            <h3 class="research-title">PVP: Personalized Video Prior for Editable Dynamic Portraits using StyleGAN</h3>
+            <p class="research-authors">
+              Kai-En Lin, <strong>Alex Trevithick</strong>, Keli Chang, Michel Sarkis, Mohsen Ghafoorian, Ning Bi, Gerhard Reitmayr, Ravi Ramamoorthi
+            </p>
+            <p class="research-venue">Computer Graphics Forum (EGSR), 2023</p>
+            <p class="research-description">
+              Leverage the StyleGAN latent space for multi view consistent edits in real-time.
+            </p>
+            <div class="research-links">
+              <a href="https://cseweb.ucsd.edu//~viscomp/projects/EGSR23PVP/" class="research-link">Project Page</a>
+              <a href="https://arxiv.org/pdf/2306.17123.pdf" class="research-link">Paper</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRF -->
+        <div class="research-card fade-in">
+          <div class="research-image">
+            <img src="images/vid_real.gif" alt="GRF">
+          </div>
+          <div class="research-content">
+            <h3 class="research-title">GRF: Learning a General Radiance Field for 3D Scene Representation and Rendering</h3>
+            <p class="research-authors">
+              <strong>Alex Trevithick</strong>, Bo Yang
+            </p>
+            <p class="research-venue">International Conference on Computer Vision (ICCV), 2021</p>
+            <p class="research-description">
+              Per-pixel features improve NeRF and allow it to generalize to new scenes without retraining.
+            </p>
+            <div class="research-links">
+              <a href="https://arxiv.org/abs/2010.04595" class="research-link">Paper</a>
+              <a href="https://github.com/alextrevithick/GRF" class="research-link">Code</a>
+              <a href="https://www.youtube.com/watch?v=nyLqnyMGfqs" class="research-link">Video</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Updates Section -->
+  <section id="updates" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Updates</h2>
+      <div class="updates-list fade-in">
+        <div class="update-item">
+          <div class="update-date">6/19/23</div>
+          <div class="update-content">Starting second internship at NVIDIA AI.</div>
+        </div>
+        <div class="update-item">
+          <div class="update-date">6/8/23</div>
+          <div class="update-content">Giving talk at the annual UCSD visual computing retreat.</div>
+        </div>
+        <div class="update-item">
+          <div class="update-date">5/29/23</div>
+          <div class="update-content"><a href="https://youtu.be/i-wpzS9ZsCs?t=3894">Jensen presents our work at Computex!</a></div>
+        </div>
+        <div class="update-item">
+          <div class="update-date">5/26/23</div>
+          <div class="update-content">Giving talk at Google Labs on Live 3D Portrait.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaching Section -->
+  <section id="teaching" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Teaching</h2>
+      <div class="teaching-container">
+        <div class="teaching-item fade-in">
+          <div class="teaching-image">
+            <img src="images/williams.jpg" alt="Williams College">
+          </div>
+          <div class="teaching-content">
+            <h3 class="teaching-title">Teaching Assistant in Measure Theory and Hilbert Spaces</h3>
+            <p class="teaching-description">Fall 2020</p>
+          </div>
+        </div>
+        <div class="teaching-item fade-in">
+          <div class="teaching-image">
+            <img src="images/williams.jpg" alt="Williams College">
+          </div>
+          <div class="teaching-content">
+            <h3 class="teaching-title">Teaching Assistant in Computational Linear Algebra</h3>
+            <p class="teaching-description">Fall 2018</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="mailto:atrevithick@ucsd.edu" class="footer-link">Email</a>
+          <a href="trevithick-cv.pdf" class="footer-link" onclick="captureOutboundLink('trevithick-cv.pdf'); return false;">CV</a>
+          <a href="https://twitter.com/alextrevith" class="footer-link">Twitter</a>
+          <a href="https://scholar.google.com/citations?user=rnP-s5UAAAAJ&hl=en&oi=sra" class="footer-link">Scholar</a>
+          <a href="https://github.com/alextrevithick" class="footer-link">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Particle.js for background -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  
+  <script>
+    // Initialize particles.js with updated colors
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 100,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": {
+          "value": ["#64ffda", "#ff5e5b", "#ffffff"]
+        },
+        "shape": {
+          "type": "circle",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          },
+          "polygon": {
+            "nb_sides": 5
+          }
+        },
+        "opacity": {
+          "value": 0.15,
+          "random": true,
+          "anim": {
+            "enable": true,
+            "speed": 0.2,
+            "opacity_min": 0.05,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 3,
+          "random": true,
+          "anim": {
+            "enable": true,
+            "speed": 2,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#ffffff",
+          "opacity": 0.05,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 0.8,
+          "direction": "none",
+          "random": true,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false,
+          "attract": {
+            "enable": true,
+            "rotateX": 600,
+            "rotateY": 1200
+          }
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "grab"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 140,
+            "line_linked": {
+              "opacity": 0.2
+            }
+          },
+          "bubble": {
+            "distance": 400,
+            "size": 40,
+            "duration": 2,
+            "opacity": 8,
+            "speed": 3
+          },
+          "repulse": {
+            "distance": 200,
+            "duration": 0.4
+          },
+          "push": {
+            "particles_nb": 4
+          },
+          "remove": {
+            "particles_nb": 2
+          }
+        }
+      },
+      "retina_detect": true
+    });
+
+    // Scroll progress bar
+    window.addEventListener('scroll', function() {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercentage = (scrollTop / scrollHeight) * 100;
+      document.querySelector('.progress-bar').style.width = scrollPercentage + '%';
+    });
+
+    // Fade-in animations
+    document.addEventListener('DOMContentLoaded', function() {
+      const fadeElements = document.querySelectorAll('.fade-in');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1
+      });
+      
+      fadeElements.forEach(element => {
+        observer.observe(element);
+      });
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(e) {
+      const navLinks = document.querySelector('.nav-links');
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      
+      if (!navLinks.contains(e.target) && e.target !== mobileMenuBtn) {
+        navLinks.classList.remove('active');
+      }
+    });
+
+    // Text animation for hero title
+    document.addEventListener('DOMContentLoaded', function() {
+      const heroTitle = document.querySelector('.hero-title');
+      
+      if (heroTitle) {
+        const text = new SplitType(heroTitle, { types: 'chars' });
+        
+        gsap.from(text.chars, {
+          opacity: 0,
+          y: 20,
+          rotateX: -90,
+          stagger: 0.02,
+          duration: 1,
+          ease: "back.out(1.7)",
+          delay: 0.5
+        });
+      }
+    });
+  </script>
 </body>
-
 </html>
