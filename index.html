@@ -670,13 +670,45 @@
         font-size: 1rem;
       }
     }
+
+    /* Add cursor-tracking background effect */
+    .cursor-effect {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -2;
+      opacity: 0.4;
+    }
+
+    .cursor-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(100, 255, 218, 0.05) 0%,
+        rgba(100, 255, 218, 0.02) 40%,
+        transparent 70%
+      );
+      transform: translate(-50%, -50%);
+      transition: transform 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
   </style>
 </head>
 
 <body>
+  <!-- Cursor Effect -->
+  <div class="cursor-effect">
+    <div class="cursor-glow"></div>
+  </div>
+  
   <!-- Progress Bar -->
   <div class="progress-bar"></div>
-
+  
   <!-- Particle Background -->
   <div class="particles" id="particles-js"></div>
 
@@ -1042,111 +1074,182 @@
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   
   <script>
-    // Initialize particles.js with updated colors
-    particlesJS("particles-js", {
-      "particles": {
-        "number": {
-          "value": 100,
-          "density": {
-            "enable": true,
-            "value_area": 800
+    document.addEventListener('DOMContentLoaded', function() {
+      // Custom particle system with strong cursor interaction but original aesthetic
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const particlesContainer = document.getElementById('particles-js');
+      
+      // Replace particles.js div with our canvas
+      particlesContainer.innerHTML = '';
+      particlesContainer.appendChild(canvas);
+      
+      // Set canvas to full screen
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      // Resize canvas on window resize
+      window.addEventListener('resize', function() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+      
+      // Mouse position
+      let mouse = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        radius: 150 // Cursor influence radius
+      };
+      
+      // Track mouse position
+      window.addEventListener('mousemove', function(e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+      
+      // Particle class
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 1.5 + 0.2; // Even smaller particles
+          this.baseX = this.x;
+          this.baseY = this.y;
+          this.density = (Math.random() * 20) + 1;
+          
+          // Match original color scheme
+          this.color = 'rgba(255, 255, 255, 0.8)';
+          if (Math.random() > 0.7) {
+            this.color = 'rgba(100, 255, 218, 0.8)'; // 30% of particles are teal
           }
-        },
-        "color": {
-          "value": ["#64ffda", "#ff5e5b", "#ffffff"]
-        },
-        "shape": {
-          "type": "circle",
-          "stroke": {
-            "width": 0,
-            "color": "#000000"
-          },
-          "polygon": {
-            "nb_sides": 5
+          
+          // Add natural movement
+          this.speedX = Math.random() * 0.5 - 0.25;
+          this.speedY = Math.random() * 0.5 - 0.25;
+          
+          // Add inertia properties
+          this.velocityX = 0;
+          this.velocityY = 0;
+          this.friction = 0.95; // Friction to create smoother motion
+        }
+        
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.fillStyle = this.color;
+          ctx.fill();
+        }
+        
+        update() {
+          // Calculate distance between particle and mouse
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          // Strong cursor influence
+          if (distance < mouse.radius) {
+            const forceDirectionX = dx / distance;
+            const forceDirectionY = dy / distance;
+            const force = (mouse.radius - distance) / mouse.radius;
+            
+            // Push particles away from cursor with inertia
+            const directionX = forceDirectionX * force * this.density * -1;
+            const directionY = forceDirectionY * force * this.density * -1;
+            
+            this.velocityX += directionX * 0.3;
+            this.velocityY += directionY * 0.3;
           }
-        },
-        "opacity": {
-          "value": 0.15,
-          "random": true,
-          "anim": {
-            "enable": true,
-            "speed": 0.2,
-            "opacity_min": 0.05,
-            "sync": false
+          
+          // Apply inertia and friction
+          this.velocityX *= this.friction;
+          this.velocityY *= this.friction;
+          
+          // Add base movement
+          this.x += this.speedX + this.velocityX;
+          this.y += this.speedY + this.velocityY;
+          
+          // Boundary check
+          if (this.x > canvas.width || this.x < 0) {
+            this.speedX = -this.speedX;
+            this.x = this.x > canvas.width ? canvas.width : 0;
           }
-        },
-        "size": {
-          "value": 3,
-          "random": true,
-          "anim": {
-            "enable": true,
-            "speed": 2,
-            "size_min": 0.1,
-            "sync": false
-          }
-        },
-        "line_linked": {
-          "enable": true,
-          "distance": 150,
-          "color": "#ffffff",
-          "opacity": 0.05,
-          "width": 1
-        },
-        "move": {
-          "enable": true,
-          "speed": 0.8,
-          "direction": "none",
-          "random": true,
-          "straight": false,
-          "out_mode": "out",
-          "bounce": false,
-          "attract": {
-            "enable": true,
-            "rotateX": 600,
-            "rotateY": 1200
+          if (this.y > canvas.height || this.y < 0) {
+            this.speedY = -this.speedY;
+            this.y = this.y > canvas.height ? canvas.height : 0;
           }
         }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-          "onhover": {
-            "enable": true,
-            "mode": "grab"
-          },
-          "onclick": {
-            "enable": true,
-            "mode": "push"
-          },
-          "resize": true
-        },
-        "modes": {
-          "grab": {
-            "distance": 140,
-            "line_linked": {
-              "opacity": 0.2
+      }
+      
+      // Create particle array
+      const particleCount = 150; // Significantly more particles
+      const particles = [];
+      
+      function init() {
+        for (let i = 0; i < particleCount; i++) {
+          particles.push(new Particle());
+        }
+      }
+      
+      function connectParticles() {
+        const maxDistance = 200; // Much longer connection distance for many more connections
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < maxDistance) {
+              // Draw connecting lines with opacity based on distance
+              const opacity = 0.1 * (1 - distance/maxDistance); // Adjusted opacity for more connections
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+              ctx.lineWidth = 0.4; // Thinner lines for more delicate look with many connections
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
             }
-          },
-          "bubble": {
-            "distance": 400,
-            "size": 40,
-            "duration": 2,
-            "opacity": 8,
-            "speed": 3
-          },
-          "repulse": {
-            "distance": 200,
-            "duration": 0.4
-          },
-          "push": {
-            "particles_nb": 4
-          },
-          "remove": {
-            "particles_nb": 2
           }
         }
-      },
-      "retina_detect": true
+      }
+      
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+        }
+        
+        connectParticles();
+        requestAnimationFrame(animate);
+      }
+      
+      init();
+      animate();
+      
+      // Cursor glow effect
+      const cursorGlow = document.querySelector('.cursor-glow');
+      let currentX = window.innerWidth / 2;
+      let currentY = window.innerHeight / 2;
+      
+      // Set initial position
+      cursorGlow.style.left = currentX + 'px';
+      cursorGlow.style.top = currentY + 'px';
+      
+      // Smooth animation
+      function animateCursor() {
+        // Smooth interpolation
+        currentX += (mouse.x - currentX) * 0.08;
+        currentY += (mouse.y - currentY) * 0.08;
+        
+        cursorGlow.style.left = currentX + 'px';
+        cursorGlow.style.top = currentY + 'px';
+        
+        requestAnimationFrame(animateCursor);
+      }
+      
+      animateCursor();
     });
 
     // Scroll progress bar
