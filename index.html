@@ -112,12 +112,194 @@
       align-items: center;
     }
 
+    /* Wave-Particle Duality Logo - Complete Redesign */
     .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
       text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    
+    .logo-icon {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(30, 41, 59, 0.6);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    
+    /* Wave animation using SVG for perfect continuity */
+    .wave-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .wave-svg {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      top: 50%;
+      transform: translateY(-50%);
+      overflow: hidden;
+    }
+    
+    .wave-svg svg {
+      position: absolute;
+      width: 200%;
+      height: 100%;
+      left: 0;
+      animation: moveSvgWave 6s infinite linear;
+    }
+    
+    @keyframes moveSvgWave {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+    
+    /* Central particle */
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #4fd1c5;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px 2px rgba(79, 209, 197, 0.6);
+      z-index: 3;
+      animation: particleJitter 3.7s infinite ease-in-out;
+    }
+    
+    @keyframes particleJitter {
+      0%, 100% {
+        transform: translate(-50%, -50%);
+      }
+      25% {
+        transform: translate(-48%, -52%);
+      }
+      50% {
+        transform: translate(-51%, -49%);
+      }
+      75% {
+        transform: translate(-52%, -51%);
+      }
+    }
+    
+    /* Orbit and electron */
+    .orbit {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border: 1px solid rgba(79, 209, 197, 0.4);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+    
+    .orbit-pulse {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 1px dashed rgba(79, 209, 197, 0.2);
+      border-radius: 50%;
+      animation: orbitPulse 4.7s infinite ease-in-out;
+    }
+    
+    @keyframes orbitPulse {
+      0%, 100% {
+        opacity: 0.2;
+        transform: scale(0.95);
+      }
+      50% {
+        opacity: 0.6;
+        transform: scale(1.05);
+      }
+    }
+    
+    /* Electron with stochastic movement */
+    .electron-wrapper {
+      position: absolute;
+      width: 24px; /* Match exactly with orbit width */
+      height: 24px; /* Match exactly with orbit height */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: rotateElectron 8s infinite linear;
+      z-index: 2;
+    }
+    
+    @keyframes rotateElectron {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+    
+    .electron {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #4fd1c5;
+      border-radius: 50%;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 6px 1px rgba(79, 209, 197, 0.6);
+      animation: electronStochastic 3.7s infinite ease-in-out;
+    }
+    
+    @keyframes electronStochastic {
+      0%, 100% {
+        transform: translate(-50%, -50%);
+      }
+      25% {
+        transform: translate(-52%, -48%);
+      }
+      50% {
+        transform: translate(-48%, -52%);
+      }
+      75% {
+        transform: translate(-51%, -49%);
+      }
+    }
+    
+    /* Background glow */
+    .glow {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(79, 209, 197, 0.2) 0%, rgba(79, 209, 197, 0) 70%);
+      animation: glowPulse 3.9s infinite alternate ease-in-out;
+      z-index: 1;
+    }
+    
+    @keyframes glowPulse {
+      0% {
+        opacity: 0.3;
+      }
+      100% {
+        opacity: 0.7;
+      }
     }
 
     .nav-links {
@@ -410,31 +592,132 @@
       color: var(--link-visited);
     }
 
-    /* Updates Section */
-    .updates-list {
+    /* Media Section */
+    .media-list {
       background-color: var(--card-bg);
       border-radius: 10px;
       padding: 2rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
 
-    .update-item {
+    .media-item {
       padding: 1rem 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .update-item:last-child {
+    .media-item:last-child {
       border-bottom: none;
     }
 
-    .update-date {
+    .media-date {
       font-weight: 700;
       color: var(--secondary);
       margin-bottom: 0.5rem;
     }
 
-    .update-content {
+    .media-content {
       color: var(--text-secondary);
+    }
+
+    /* Experience Section */
+    .experience-container {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .experience-item {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background-color: rgba(30, 41, 59, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .experience-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .experience-logo {
+      flex-shrink: 0;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--accent);
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem;
+    }
+
+    .experience-logo img {
+      width: 75%;
+      height: 75%;
+      object-fit: contain;
+    }
+
+    .experience-content {
+      flex: 1;
+    }
+
+    .experience-title {
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+
+    .experience-institution {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .experience-details {
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .experience-date {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      font-weight: bold;
+      color: var(--accent);
+      font-size: 1.1rem;
+      background-color: rgba(255, 94, 91, 0.1);
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .experience-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding-bottom: 4rem; /* Add space at bottom for date */
+        padding-top: 1.5rem; /* Reduce top padding */
+      }
+      
+      .experience-logo {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .experience-date {
+        bottom: 1rem;
+        right: 50%;
+        transform: translateX(50%);
+        top: auto; /* Reset top property */
+      }
     }
 
     /* Education Section Styles */
@@ -501,7 +784,7 @@
     .education-details {
       color: var(--text-secondary);
       margin-bottom: 0.5rem;
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
     .education-year {
@@ -1027,7 +1310,41 @@
   <!-- Navigation -->
   <nav class="navbar">
     <div class="container navbar-container">
-      <a href="#" class="logo">Alex Trevithick</a>
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <div class="glow"></div>
+          <div class="wave-container">
+            <div class="wave-svg">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 2">
+                <defs>
+                  <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="rgba(79, 209, 197, 0)" />
+                    <stop offset="10%" stop-color="rgba(79, 209, 197, 0.2)" />
+                    <stop offset="20%" stop-color="rgba(79, 209, 197, 0.8)" />
+                    <stop offset="30%" stop-color="rgba(79, 209, 197, 0.2)" />
+                    <stop offset="40%" stop-color="rgba(79, 209, 197, 0)" />
+                    <stop offset="50%" stop-color="rgba(79, 209, 197, 0)" />
+                    <stop offset="60%" stop-color="rgba(79, 209, 197, 0.2)" />
+                    <stop offset="70%" stop-color="rgba(79, 209, 197, 0.8)" />
+                    <stop offset="80%" stop-color="rgba(79, 209, 197, 0.2)" />
+                    <stop offset="90%" stop-color="rgba(79, 209, 197, 0)" />
+                    <stop offset="100%" stop-color="rgba(79, 209, 197, 0)" />
+                  </linearGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#waveGradient)" />
+              </svg>
+            </div>
+            <div class="particle"></div>
+            <div class="orbit">
+              <div class="orbit-pulse"></div>
+            </div>
+            <div class="electron-wrapper">
+              <div class="electron"></div>
+            </div>
+          </div>
+        </div>
+        Alex Trevithick
+      </a>
       <div class="nav-links">
         <a href="#about" class="nav-link">About</a>
         <a href="#research" class="nav-link">Research</a>
@@ -1355,7 +1672,7 @@
     </div>
   </section>
 
-  <!-- Experience Section (formerly Professional Journey) -->
+  <!-- Experience Section -->
   <section id="experience" class="section">
     <div class="container">
       <h2 class="section-title fade-in">Experience</h2>
@@ -1411,6 +1728,7 @@
           </div>
         </div>
       </div>
+      <div class="timeline-decoration"></div>
     </div>
   </section>
 
