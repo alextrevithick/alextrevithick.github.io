@@ -437,49 +437,87 @@
       color: var(--text-secondary);
     }
 
-    /* Teaching Section */
-    .teaching-item {
+    /* Education Section Styles */
+    .education-container {
       display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .education-item {
+      display: flex;
+      align-items: center;
       gap: 2rem;
-      margin-bottom: 2rem;
-      background-color: var(--card-bg);
-      border-radius: 10px;
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      transition: var(--transition);
+      padding: 1.5rem;
+      border-radius: 8px;
+      background-color: rgba(30, 41, 59, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .teaching-item:hover {
+    .education-item:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
-    .teaching-image {
-      width: 120px;
-      height: 120px;
-      border-radius: 10px;
+    .education-logo {
+      flex-shrink: 0;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
       overflow: hidden;
+      border: 3px solid var(--accent);
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0rem;
     }
 
-    .teaching-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .education-logo img {
+      width: 86%;
+      height: 86%;
+      object-fit: contain;
     }
 
-    .teaching-content {
-      flex-grow: 1;
+    .education-content {
+      flex: 1;
     }
 
-    .teaching-title {
-      font-size: 1.1rem;
-      font-weight: 700;
+    .education-degree {
+      font-size: 1.4rem;
       margin-bottom: 0.5rem;
-      color: var(--text);
+      color: var(--text-primary);
     }
 
-    .teaching-description {
+    .education-institution {
+      font-size: 1.1rem;
       color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .education-details {
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .education-year {
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    @media (max-width: 768px) {
+      .education-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+      
+      .education-logo {
+        width: 80px;
+        height: 80px;
+      }
     }
 
     /* Footer */
@@ -559,10 +597,15 @@
         grid-template-columns: 1fr;
       }
       
-      .teaching-item {
+      .education-item {
         flex-direction: column;
-        align-items: center;
         text-align: center;
+        gap: 1rem;
+      }
+      
+      .education-logo {
+        width: 80px;
+        height: 80px;
       }
     }
 
@@ -697,6 +740,238 @@
       transform: translate(-50%, -50%);
       transition: transform 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
+
+    /* Timeline Section Styles */
+    .timeline {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: var(--accent);
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 3rem;
+      width: 100%;
+    }
+
+    .timeline-item:nth-child(odd) {
+      padding-right: calc(50% + 2rem);
+      text-align: right;
+    }
+
+    .timeline-item:nth-child(even) {
+      padding-left: calc(50% + 2rem);
+      text-align: left;
+    }
+
+    .timeline-icon {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid var(--accent);
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .timeline-icon img {
+      width: 70%;
+      height: 70%;
+      object-fit: contain;
+    }
+
+    .timeline-content {
+      padding: 1.5rem;
+      background: rgba(30, 41, 59, 0.4);
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .timeline-content:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .timeline-content h3 {
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+      font-size: 1.3rem;
+    }
+
+    .timeline-content p {
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-date {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: var(--accent);
+      color: var(--background);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    /* Media Section Styles */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 2rem;
+    }
+
+    .media-item {
+      background: rgba(30, 41, 59, 0.4);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .media-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .media-image {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+    }
+
+    @media (min-width: 992px) {
+      .media-image {
+        height: 280px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .media-image {
+        height: 320px;
+      }
+    }
+
+    .media-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+    }
+
+    .play-button svg {
+      width: 30px;
+      height: 30px;
+      margin-left: 4px;
+    }
+
+    .media-item:hover .play-button {
+      background-color: var(--accent);
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .media-item:hover .media-image img {
+      transform: scale(1.05);
+      filter: brightness(0.8);
+    }
+
+    .media-content {
+      padding: 1.5rem;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 0.8rem;
+    }
+
+    .media-title {
+      font-size: 1.3rem;
+      color: var(--text-primary);
+    }
+
+    .media-description {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .media-spacer {
+      /* Empty spacer to push button to bottom */
+    }
+
+    .media-link {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: var(--background);
+      border-radius: 4px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      width: fit-content;
+      margin-top: auto;
+    }
+
+    .media-link:hover {
+      background: #4fd1c5;
+    }
+
+    @media (max-width: 768px) {
+      .timeline::before {
+        left: 30px;
+      }
+      
+      .timeline-item:nth-child(odd),
+      .timeline-item:nth-child(even) {
+        padding-left: 80px;
+        padding-right: 0;
+        text-align: left;
+      }
+      
+      .timeline-icon {
+        left: 30px;
+      }
+      
+      .media-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
@@ -719,8 +994,9 @@
       <div class="nav-links">
         <a href="#about" class="nav-link">About</a>
         <a href="#research" class="nav-link">Research</a>
-        <a href="#updates" class="nav-link">Updates</a>
-        <a href="#teaching" class="nav-link">Teaching</a>
+        <a href="#media" class="nav-link">Media</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="#education" class="nav-link">Education</a>
         <a href="trevithick-cv.pdf" class="nav-link" onclick="captureOutboundLink('trevithick-cv.pdf'); return false;">CV</a>
       </div>
       <button class="mobile-menu-btn">☰</button>
@@ -995,60 +1271,136 @@
     </div>
   </section>
 
-  <!-- Updates Section -->
-  <section id="updates" class="section">
+  <!-- Media Section -->
+  <section id="media" class="section">
     <div class="container">
-      <h2 class="section-title fade-in">Updates</h2>
-      <div class="updates-list fade-in">
-        <div class="update-item">
-          <div class="update-date">8/1/25</div>
-          <div class="update-content">Starting as a Research Scientist at NVIDIA.</div>
+      <h2 class="section-title fade-in">Media Coverage</h2>
+      <div class="media-grid">
+        <div class="media-item fade-in">
+          <div class="media-image">
+            <a href="https://youtu.be/i-wpzS9ZsCs?t=3894" target="_blank">
+              <img src="images/jensen.png" alt="Jensen Huang at Computex">
+              <div class="play-button">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                </svg>
+              </div>
+            </a>
+          </div>
+          <div class="media-content">
+            <h3 class="media-title">NVIDIA CEO Jensen Huang Presents Our Work at Computex 2023</h3>
+            <p class="media-description">
+              Jensen Huang showcased our Live 3D Portrait technology during his keynote presentation at Computex 2023.
+            </p>
+            <a href="https://youtu.be/i-wpzS9ZsCs?t=3894" class="media-link" target="_blank">Watch Video</a>
+          </div>
         </div>
-        <div class="update-item">
-          <div class="update-date">12/17/23</div>
-          <div class="update-content">Starting internship at Google DeepMind.</div>
-        </div>
-        <div class="update-item">
-          <div class="update-date">6/19/23</div>
-          <div class="update-content">Starting second internship at NVIDIA AI.</div>
-        </div>
-        <div class="update-item">
-          <div class="update-date">6/8/23</div>
-          <div class="update-content">Giving talk at the annual UCSD visual computing retreat.</div>
-        </div>
-        <div class="update-item">
-          <div class="update-date">5/29/23</div>
-          <div class="update-content"><a href="https://youtu.be/i-wpzS9ZsCs?t=3894">Jensen presents our work at Computex!</a></div>
-        </div>
-        <div class="update-item">
-          <div class="update-date">5/26/23</div>
-          <div class="update-content">Giving talk at Google Labs on Live 3D Portrait.</div>
+        <div class="media-item fade-in">
+          <div class="media-image">
+            <a href="https://www.youtube.com/watch?v=CyIqd_HR6rY" target="_blank">
+              <img src="images/twominute.png" alt="Two Minute Papers">
+              <div class="play-button">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                </svg>
+              </div>
+            </a>
+          </div>
+          <div class="media-content">
+            <h3 class="media-title">Two Minute Papers Features Live 3D Portrait</h3>
+            <p class="media-description">
+              Our Live 3D Portrait research was featured on the popular YouTube channel Two Minute Papers.
+            </p>
+            <a href="https://www.youtube.com/watch?v=CyIqd_HR6rY" class="media-link" target="_blank">Watch Video</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Teaching Section -->
-  <section id="teaching" class="section">
+  <!-- Experience Section (formerly Professional Journey) -->
+  <section id="experience" class="section">
     <div class="container">
-      <h2 class="section-title fade-in">Teaching</h2>
-      <div class="teaching-container">
-        <div class="teaching-item fade-in">
-          <div class="teaching-image">
-            <img src="images/williams.jpg" alt="Williams College">
+      <h2 class="section-title fade-in">Experience</h2>
+      <div class="timeline">
+        <div class="timeline-item fade-in">
+          <div class="timeline-icon">
+            <img src="images/nvidia.jpg" alt="NVIDIA">
           </div>
-          <div class="teaching-content">
-            <h3 class="teaching-title">Teaching Assistant in Measure Theory and Hilbert Spaces</h3>
-            <p class="teaching-description">Fall 2020</p>
+          <div class="timeline-content">
+            <h3>Research Scientist</h3>
+            <p>NVIDIA AI</p>
+            <span class="timeline-date">2025-Present</span>
           </div>
         </div>
-        <div class="teaching-item fade-in">
-          <div class="teaching-image">
-            <img src="images/williams.jpg" alt="Williams College">
+        <div class="timeline-item fade-in">
+          <div class="timeline-icon">
+            <img src="images/deepmind.png" alt="Google DeepMind">
           </div>
-          <div class="teaching-content">
-            <h3 class="teaching-title">Teaching Assistant in Computational Linear Algebra</h3>
-            <p class="teaching-description">Fall 2018</p>
+          <div class="timeline-content">
+            <h3>Student Researcher</h3>
+            <p>Google DeepMind</p>
+            <span class="timeline-date">2023-2024</span>
+          </div>
+        </div>
+        <div class="timeline-item fade-in">
+          <div class="timeline-icon">
+            <img src="images/nvidia.jpg" alt="NVIDIA">
+          </div>
+          <div class="timeline-content">
+            <h3>Research Intern</h3>
+            <p>NVIDIA AI</p>
+            <span class="timeline-date">2022-2023</span>
+          </div>
+        </div>
+        <div class="timeline-item fade-in">
+          <div class="timeline-icon">
+            <img src="images/mpi.png" alt="Max Planck Institute">
+          </div>
+          <div class="timeline-content">
+            <h3>Visiting Researcher</h3>
+            <p>Max Planck Institute for Informatics</p>
+            <span class="timeline-date">2021</span>
+          </div>
+        </div>
+        <div class="timeline-item fade-in">
+          <div class="timeline-icon">
+            <img src="images/oxford_logo.jpg" alt="University of Oxford">
+          </div>
+          <div class="timeline-content">
+            <h3>Wilmers Fellow</h3>
+            <p>University of Oxford</p>
+            <span class="timeline-date">2020</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education Section -->
+  <section id="education" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Education</h2>
+      <div class="education-container">
+        <div class="education-item fade-in">
+          <div class="education-logo">
+            <img src="images/ucsd.png" alt="UC San Diego">
+          </div>
+          <div class="education-content">
+            <h3 class="education-degree">Ph.D. in Computer Science</h3>
+            <p class="education-institution">UC San Diego, La Jolla, CA</p>
+            <p class="education-details">Advisor: Prof. Ravi Ramamoorthi</p>
+            <p class="education-year">2021-2025</p>
+          </div>
+        </div>
+        <div class="education-item fade-in">
+          <div class="education-logo">
+            <img src="images/williams.png" alt="Williams College">
+          </div>
+          <div class="education-content">
+            <h3 class="education-degree">B.A. in Computer Science and Mathematics</h3>
+            <p class="education-institution">Williams College, Williamstown, MA</p>
+            <p class="education-year">2017-2021</p>
           </div>
         </div>
       </div>
