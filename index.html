@@ -454,6 +454,7 @@
       border-radius: 8px;
       background-color: rgba(30, 41, 59, 0.4);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
     }
 
     .education-item:hover {
@@ -472,12 +473,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0rem;
+      padding: 0.5rem;
     }
 
     .education-logo img {
-      width: 86%;
-      height: 86%;
+      width: 80%;
+      height: 80%;
       object-fit: contain;
     }
 
@@ -487,24 +488,32 @@
 
     .education-degree {
       font-size: 1.4rem;
-      margin-bottom: 0.5rem;
-      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      color: var(--text);
     }
 
     .education-institution {
       font-size: 1.1rem;
       color: var(--text-secondary);
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
 
     .education-details {
       color: var(--text-secondary);
       margin-bottom: 0.5rem;
+      line-height: 1.5;
     }
 
     .education-year {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
       font-weight: bold;
       color: var(--accent);
+      font-size: 1.1rem;
+      background-color: rgba(255, 94, 91, 0.1);
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
     }
 
     @media (max-width: 768px) {
@@ -512,11 +521,18 @@
         flex-direction: column;
         text-align: center;
         gap: 1rem;
+        padding-top: 2.5rem;
       }
       
       .education-logo {
         width: 80px;
         height: 80px;
+      }
+      
+      .education-year {
+        top: 1rem;
+        right: 50%;
+        transform: translateX(50%);
       }
     }
 
@@ -1390,7 +1406,8 @@
             <h3 class="education-degree">Ph.D. in Computer Science</h3>
             <p class="education-institution">UC San Diego, La Jolla, CA</p>
             <p class="education-details">Advisor: Prof. Ravi Ramamoorthi</p>
-            <p class="education-year">2021-2025</p>
+            <p class="education-details">NSF Graduate Research Fellow</p>
+            <span class="education-year">2021-2025</span>
           </div>
         </div>
         <div class="education-item fade-in">
@@ -1400,7 +1417,7 @@
           <div class="education-content">
             <h3 class="education-degree">B.A. in Computer Science and Mathematics</h3>
             <p class="education-institution">Williams College, Williamstown, MA</p>
-            <p class="education-year">2017-2021</p>
+            <span class="education-year">2017-2021</span>
           </div>
         </div>
       </div>
