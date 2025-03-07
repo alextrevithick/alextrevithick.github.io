@@ -883,6 +883,17 @@
         max-width: 400px;
         margin: 0 auto;
       }
+      
+      /* Responsive styles for the new About section */
+      #about .about-container > div > div {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 40px;
+      }
+      
+      #about .about-container > div > div > div:first-child {
+        align-items: center;
+      }
     }
 
     @media (max-width: 768px) {
@@ -907,6 +918,32 @@
       .education-logo {
         width: 80px;
         height: 80px;
+      }
+      
+      /* Additional responsive styles for the About section on smaller screens */
+      #about .about-container > div > div {
+        padding: 30px 20px;
+      }
+      
+      #about .about-container > div > div > div:first-child > div:first-child {
+        width: 200px;
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      /* Even smaller screens adjustments for About section */
+      #about .about-container > div > div > div:first-child > div:first-child {
+        width: 180px;
+        height: 180px;
+      }
+      
+      #about .about-container h3:first-of-type {
+        font-size: 1.5rem;
+      }
+      
+      #about .about-container p {
+        font-size: 1rem;
       }
     }
 
@@ -1292,6 +1329,88 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* Add essential fixes for the About section */
+    #about .section-title::after {
+      height: 2px !important;
+    }
+    
+    #about .about-container {
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Medium screen adjustments - for tablets and small laptops */
+    @media (min-width: 769px) and (max-width: 1199px) {
+      #about .about-content-wrapper {
+        padding-top: 80px !important;
+        grid-template-columns: 1fr 1fr !important;
+      }
+      
+      #about .profile-container {
+        margin-top: 20px !important;
+      }
+      
+      #about .profile-image {
+        width: 180px !important;
+        height: 180px !important;
+        margin-top: 10px !important;
+      }
+      
+      #about .bio-greeting {
+        margin-top: 15px !important;
+      }
+    }
+    
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+      #about .about-content-wrapper {
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
+        padding: 50px 30px 30px !important;
+      }
+      
+      #about .profile-container {
+        align-items: center !important;
+      }
+      
+      #about .profile-image {
+        width: 180px !important;
+        height: 180px !important;
+        margin-bottom: 30px !important;
+        margin-top: 15px !important;
+      }
+    }
+  </style>
+
+  /* Add adjustments for medium-sized screens */
+  <style>
+    @media (min-width: 769px) and (max-width: 1199px) {
+      /* Fix for the banner */
+      #about .about-banner {
+        height: 3px !important;
+        min-height: 3px !important;
+        max-height: 3px !important;
+        overflow: hidden !important;
+      }
+      
+      /* Add more padding to the content wrapper */
+      #about .about-content-wrapper {
+        padding-top: 80px !important;
+      }
+      
+      /* Add more margin to the profile container */
+      #about .profile-container {
+        margin-top: 20px !important;
+      }
+      
+      /* Reduce profile image size slightly */
+      #about .profile-image {
+        width: 180px !important;
+        height: 180px !important;
+        margin-top: 10px !important;
+      }
+    }
   </style>
 </head>
 
@@ -1350,7 +1469,6 @@
         <a href="#research" class="nav-link">Research</a>
         <a href="#media" class="nav-link">Media</a>
         <a href="#experience" class="nav-link">Experience</a>
-        <a href="#education" class="nav-link">Education</a>
         <a href="trevithick-cv.pdf" class="nav-link" onclick="captureOutboundLink('trevithick-cv.pdf'); return false;">CV</a>
       </div>
       <button class="mobile-menu-btn">☰</button>
@@ -1363,7 +1481,7 @@
       <h3 class="hero-subtitle fade-in">Hello, I'm</h3>
       <h1 class="hero-title fade-in">Alex Trevithick</h1>
       <p class="hero-description fade-in">
-        I'm a final-year PhD candidate at UC San Diego, working on training and leveraging generative models for computer vision, especially pushing towards 4D reconstruction, real-time inference, and photorealistic generation.
+        I'm a researcher, working on training and leveraging generative models for 3D and 4D computer vision.
       </p>
       <div class="hero-links fade-in">
         <a href="mailto:atrevithick@ucsd.edu" class="hero-link">
@@ -1388,26 +1506,293 @@
   </section>
 
   <!-- About Section -->
-  <section id="about" class="section">
+  <section id="about" class="section" style="padding-top: 40px; padding-bottom: 100px; position: relative;">
     <div class="container">
-      <h2 class="section-title fade-in">About Me</h2>
-      <div class="about-content">
-        <div class="about-image fade-in">
-          <img src="images/IMG_4995.png" alt="Alex Trevithick">
-        </div>
-        <div class="about-text fade-in">
-          <p>
-            I am a <strong>final-year</strong> PhD candidate at <a href="https://cse.ucsd.edu/">UC San Diego</a>, advised by Professor <a href="http://cseweb.ucsd.edu/~ravir/">Ravi Ramamoorthi</a>. In the past, I have had the fortune to work at the <a href="http://gvv.mpi-inf.mpg.de/index.html">Max Planck Institute</a> and the <a href="https://www.exeter.ox.ac.uk/">University of Oxford</a>.
-          </p>
-          <p>
-            I spent 1.5 years at <a href="https://www.nvidia.com/en-us/research/">NVIDIA AI</a> working with <a href="https://luminohope.org/">Koki Nagano</a>. I'm currently at <a href="https://deepmind.google/">Google DeepMind</a> as a Student Researcher with <a href="https://pratulsrinivasan.github.io/">Pratul Srinivasan</a>.
-          </p>
-          <p>
-            I'm lucky to be supported by an <a href="https://www.nsfgrfp.org/">NSF Graduate Research Fellowship</a> and Jacobs School of Engineering Fellowship.
-          </p>
-          <p>
-            <strong>I'm currently looking for what's next!</strong>
-          </p>
+      <!-- Fixed height for the section title -->
+      <h2 class="section-title fade-in" style="margin-bottom: 1.5rem; font-size: 2.2rem; position: relative; z-index: 5;">About Me</h2>
+      
+      <div class="about-container fade-in" style="max-width: 1100px; margin: 30px auto 0; position: relative; z-index: 3;">
+        <!-- Main card with dark background -->
+        <div style="background-color: rgba(18, 18, 24, 0.7); 
+                    border-radius: 16px; 
+                    overflow: hidden;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    position: relative;">
+          
+          <!-- Decorative elements - THINNER BANNER with improved z-index and fixed height -->
+          <div class="about-banner" style="position: absolute; top: 0; left: 0; right: 0; height: 6px; 
+                      background: linear-gradient(90deg, var(--secondary), var(--accent));
+                      z-index: 10; min-height: 6px; max-height: 6px; overflow: hidden;"></div>
+          
+          <!-- Bottom gradient accent -->
+          <div style="position: absolute; bottom: 60px; left: 60px; width: 220px; height: 220px; 
+                      border-radius: 50%; background: radial-gradient(circle, 
+                      rgba(255, 94, 91, 0.05) 0%, transparent 70%);
+                      filter: blur(25px); z-index: 1;"></div>
+          
+          <!-- Only add the essential CSS fixes -->
+          <style>
+            /* Fix for the section title height and profile pic positioning */
+            .section-title::after {
+              height: 2px !important;
+            }
+            
+            .about-container {
+              position: relative;
+              z-index: 2;
+            }
+            
+            /* Medium screen adjustments - for tablets and small laptops */
+            @media (min-width: 769px) and (max-width: 1199px) {
+              .about-content-wrapper {
+                padding-top: 80px !important;
+                grid-template-columns: 1fr 1fr !important;
+              }
+              
+              .profile-container {
+                margin-top: 20px !important;
+              }
+              
+              .profile-image {
+                width: 180px !important;
+                height: 180px !important;
+                margin-top: 10px !important;
+              }
+              
+              .bio-greeting {
+                margin-top: 15px !important;
+              }
+            }
+            
+            @media (max-width: 768px) {
+              .about-content-wrapper {
+                grid-template-columns: 1fr !important;
+                gap: 30px !important;
+                padding: 50px 30px 30px !important;
+              }
+              
+              .profile-container {
+                align-items: center !important;
+              }
+              
+              .profile-image {
+                width: 180px !important;
+                height: 180px !important;
+                margin-bottom: 30px !important;
+                margin-top: 15px !important;
+              }
+              
+              .bio-greeting {
+                font-size: 1.5rem !important;
+                text-align: center !important;
+              }
+              
+              .bio-text, .research-description {
+                font-size: 1rem !important;
+              }
+              
+              .research-panel {
+                margin-top: 30px !important;
+              }
+              
+              .cta-button {
+                margin-top: 20px !important;
+                justify-content: center !important;
+              }
+              
+              #about.section {
+                padding-top: 30px !important;
+              }
+              
+              #about .section-title {
+                font-size: 1.8rem !important;
+                margin-bottom: 1.2rem !important;
+              }
+            }
+          </style>
+          
+          <!-- Content wrapper with improved spacing for profile image -->
+          <div class="about-content-wrapper" style="padding: 45px 60px 60px; position: relative; z-index: 3; display: grid; 
+                      grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 0;">
+            
+            <!-- Left column with profile and credentials -->
+            <div class="profile-container" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; margin-top: 15px;">
+              <!-- Profile image with improved styling and subtle background effect -->
+              <div class="profile-image" style="width: 240px; height: 240px; border-radius: 16px; overflow: hidden; 
+                          margin-bottom: 40px; border: 3px solid rgba(100, 255, 218, 0.2); 
+                          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); position: relative;
+                          transform: rotate(0deg);">
+                <!-- Subtle gradient background to help distinguish hair -->
+                <div style="position: absolute; inset: 0; z-index: 1;
+                           background: radial-gradient(circle at 30% 30%, 
+                                       rgba(40, 80, 95, 0.65) 0%, 
+                                       rgba(15, 15, 35, 0.75) 70%);"></div>
+                <!-- Subtle edge highlight to create separation -->
+                <div style="position: absolute; inset: 0; z-index: 1;
+                           box-shadow: inset 0 0 30px 8px rgba(100, 255, 218, 0.12);
+                           pointer-events: none;"></div>
+                <img src="images/me9.png" alt="Alex Trevithick" 
+                     style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); position: relative; z-index: 2;">
+                <div style="position: absolute; inset: 0; z-index: 3;
+                             box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);"></div>
+              </div>
+              
+              <!-- Credentials with improved spacing and visual hierarchy -->
+              <div style="width: 100%; display: flex; flex-direction: column; gap: 24px;">
+                <!-- NEW: NVIDIA Position - More understated styling -->
+                <div style="display: flex; align-items: center; gap: 16px; 
+                             background: rgba(30, 41, 59, 0.4);
+                             padding: 16px; border-radius: 12px; border-left: 3px solid rgba(118, 185, 0, 0.6);">
+                  <div style="width: 56px; height: 56px; border-radius: 12px; 
+                               background-color: white; display: flex; align-items: center; 
+                               justify-content: center; flex-shrink: 0; padding: 0.5rem;
+                               box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                    <img src="images/nvidia.jpg" alt="NVIDIA" 
+                         style="width: 85%; height: 85%; object-fit: contain;">
+                  </div>
+                  <div>
+                    <p style="margin: 0 0 4px 0; font-size: 0.9rem; color: var(--text-secondary); 
+                               font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Next</p>
+                    <p style="margin: 0 0 4px 0; font-size: 1.3rem; color: var(--text); font-weight: 600;">Research Scientist</p>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);">NVIDIA Research</p>
+                  </div>
+                </div>
+                
+                <!-- UCSD affiliation - Restructured to match NVIDIA format -->
+                <div style="display: flex; align-items: center; gap: 16px;">
+                  <div style="width: 56px; height: 56px; border-radius: 12px; 
+                               background-color: white; display: flex; align-items: center; 
+                               justify-content: center; flex-shrink: 0; padding: 0.5rem;
+                               box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                    <img src="images/ucsd.png" alt="UC San Diego" 
+                         style="width: 85%; height: 85%; object-fit: contain;">
+                  </div>
+                  <div>
+                    <p style="margin: 0 0 4px 0; font-size: 0.9rem; color: var(--text-secondary); 
+                               font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Education</p>
+                    <p style="margin: 0 0 4px 0; font-size: 1.3rem; color: var(--text); font-weight: 600;">Ph.D. Computer Science</p>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);">UC San Diego</p>
+                  </div>
+                </div>
+                
+                <!-- Advisor with improved styling -->
+                <div style="display: flex; align-items: flex-start; gap: 16px;">
+                  <div style="width: 56px; height: 56px; border-radius: 12px; 
+                               background-color: rgba(100, 255, 218, 0.1); display: flex; 
+                               align-items: center; justify-content: center; flex-shrink: 0;
+                               box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" 
+                         fill="none" stroke="var(--secondary)" stroke-width="2" 
+                         stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path>
+                      <polygon points="12 15 17 21 7 21 12 15"></polygon>
+                    </svg>
+                  </div>
+                  <div>
+                    <p style="margin: 0 0 4px 0; font-size: 0.9rem; color: var(--secondary); 
+                               font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Advisor</p>
+                    <p style="margin: 0; font-size: 1.1rem; color: var(--text);">
+                      <a href="https://cseweb.ucsd.edu/~ravir/" 
+                         style="color: var(--text); text-decoration: none; 
+                                transition: color 0.2s ease; position: relative;
+                                display: inline-block; padding-bottom: 2px;">
+                        Prof. Ravi Ramamoorthi
+                        <span style="position: absolute; bottom: 0; left: 0; width: 0; 
+                                     height: 1px; background-color: var(--secondary);
+                                     transition: width 0.3s ease;"></span>
+                      </a>
+                    </p>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            
+            <!-- Right column with bio text -->
+            <div class="bio-container" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <!-- Bio content with improved typography and spacing -->
+              <div>
+                <h3 class="bio-greeting" style="font-size: 1.8rem; margin: 0 0 24px 0; color: var(--text); 
+                           font-weight: 700; font-family: 'Playfair Display', serif;">
+                  Hello, I'm Alex
+                </h3>
+                
+                <!-- Updated: Career trajectory with less promotional tone -->
+                <p class="bio-text" style="font-size: 1.15rem; line-height: 1.7; margin: 0 0 24px 0; 
+                           color: var(--text-secondary);">
+                  I'm an incoming Research Scientist at <a href="https://www.nvidia.com/en-us/research/" style="color: var(--link); 
+                                                          border-bottom: 1px dashed rgba(100, 255, 218, 0.4); 
+                                                          padding-bottom: 1px; text-decoration: none;
+                                                          transition: all 0.2s ease;">NVIDIA</a>. I'm currently finishing my <strong style="color: var(--text);">Ph.D.</strong> at 
+                  <a href="https://cse.ucsd.edu/" style="color: var(--link); 
+                                                          border-bottom: 1px dashed rgba(100, 255, 218, 0.4); 
+                                                          padding-bottom: 1px; text-decoration: none;
+                                                          transition: all 0.2s ease;">UC San Diego</a>, 
+                  advised by Professor 
+                  <a href="https://cseweb.ucsd.edu/~ravir/" style="color: var(--link); 
+                                                                   border-bottom: 1px dashed rgba(100, 255, 218, 0.4); 
+                                                                   padding-bottom: 1px; text-decoration: none;
+                                                                   transition: all 0.2s ease;">Ravi Ramamoorthi</a> 
+                  and supported by the 
+                  <a href="https://www.nsfgrfp.org/" style="color: var(--link); 
+                                                            border-bottom: 1px dashed rgba(100, 255, 218, 0.4); 
+                                                            padding-bottom: 1px; text-decoration: none;
+                                                            transition: all 0.2s ease;">NSF GRFP</a>.
+                </p>
+                
+                <p class="bio-text" style="font-size: 1.15rem; line-height: 1.7; margin: 0 0 32px 0; 
+                           color: var(--text-secondary);">
+                  Reach out if you're interested in collaborating!
+                </p>
+              </div>
+              
+              <!-- Research interests panel - using the original larger panel style instead of the grid -->
+              <div class="research-panel" style="background-color: rgba(30, 41, 59, 0.4); border-radius: 12px; 
+                           padding: 32px; position: relative; overflow: hidden;
+                           box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);">
+                <!-- Decorative background element -->
+                <div style="position: absolute; top: -30px; right: -30px; width: 150px; height: 150px; 
+                             border-radius: 50%; background: radial-gradient(circle, 
+                             rgba(100, 255, 218, 0.08) 0%, transparent 70%);
+                             filter: blur(15px);"></div>
+                
+                <h3 style="font-size: 1.3rem; margin: 0 0 16px 0; color: var(--text); 
+                           display: flex; align-items: center; gap: 12px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                       fill="none" stroke="var(--secondary)" stroke-width="2" 
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                  </svg>
+                  Research Interests
+                </h3>
+                
+                <p class="research-description" style="font-size: 1.1rem; line-height: 1.7; margin: 0; color: var(--text-secondary); position: relative; z-index: 2;">
+                  I'm interested in training and leveraging generative models for computer vision, especially pushing towards 
+                  <span style="color: var(--text); font-weight: 500;">4D reconstruction</span>, 
+                  <span style="color: var(--text); font-weight: 500;">real-time inference</span>, and 
+                  <span style="color: var(--text); font-weight: 500;">photorealistic generation</span>.
+                </p>
+              </div>
+              
+              <!-- Call to action to research section -->
+              <div class="cta-button" style="margin-top: 24px; text-align: right;">
+                <a href="#research" style="display: inline-flex; align-items: center; gap: 8px; 
+                                           color: var(--secondary); font-weight: 600; 
+                                           text-decoration: none; transition: all 0.2s ease;">
+                  See my research
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" 
+                       fill="none" stroke="currentColor" stroke-width="2" 
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1732,37 +2117,6 @@
     </div>
   </section>
 
-  <!-- Education Section -->
-  <section id="education" class="section">
-    <div class="container">
-      <h2 class="section-title fade-in">Education</h2>
-      <div class="education-container">
-        <div class="education-item fade-in">
-          <div class="education-logo">
-            <img src="images/ucsd.png" alt="UC San Diego">
-          </div>
-          <div class="education-content">
-            <h3 class="education-degree">Ph.D. in Computer Science</h3>
-            <p class="education-institution">UC San Diego, La Jolla, CA</p>
-            <p class="education-details">Advisor: Prof. Ravi Ramamoorthi</p>
-            <p class="education-details">NSF Graduate Research Fellow</p>
-            <span class="education-year">2021-2025</span>
-          </div>
-        </div>
-        <div class="education-item fade-in">
-          <div class="education-logo">
-            <img src="images/williams.png" alt="Williams College">
-          </div>
-          <div class="education-content">
-            <h3 class="education-degree">B.A. in Computer Science and Mathematics</h3>
-            <p class="education-institution">Williams College, Williamstown, MA</p>
-            <span class="education-year">2017-2021</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -1958,6 +2312,26 @@
       }
       
       animateCursor();
+      
+      // Add hover effects for the advisor link in the About section
+      const advisorLink = document.querySelector('#about a[href*="ravir"]');
+      if (advisorLink) {
+        const underline = advisorLink.querySelector('span');
+        
+        advisorLink.addEventListener('mouseenter', function() {
+          if (underline) {
+            underline.style.width = '100%';
+          }
+          this.style.color = 'var(--secondary)';
+        });
+        
+        advisorLink.addEventListener('mouseleave', function() {
+          if (underline) {
+            underline.style.width = '0';
+          }
+          this.style.color = 'var(--text)';
+        });
+      }
     });
 
     // Scroll progress bar
@@ -1988,7 +2362,7 @@
       });
     });
 
-    // Smooth scrolling for anchor links
+    // Smooth scrolling for anchor links with adjusted offset for About section
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -1998,8 +2372,10 @@
         
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
+          // Special case for About section to position it higher
+          const offset = targetId === '#about' ? 50 : 80;
           window.scrollTo({
-            top: targetElement.offsetTop - 80,
+            top: targetElement.offsetTop - offset,
             behavior: 'smooth'
           });
         }
